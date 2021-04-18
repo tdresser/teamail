@@ -4,11 +4,12 @@ project(Teamail)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
 add_executable (Main main.cc test.cc)
 
-  set(EMS
-      "SHELL:-s EXTRA_EXPORTED_RUNTIME_METHODS=['ccall','cwrap']"
-  )
-  target_compile_options(Main PRIVATE ${EMS})
-  target_link_options(Main PRIVATE ${EMS})
+set(EMS
+    "SHELL:-s EXTRA_EXPORTED_RUNTIME_METHODS=['ccall','cwrap']"
+)
+target_compile_options(Main PRIVATE ${EMS})
+target_link_options(Main PRIVATE ${EMS})
+set_target_properties(Main PROPERTIES LINK_FLAGS "--bind")
 
 # set(CMAKE_C_COMPILER "emcc")
 # CMAKE_CXX_COMPILER
