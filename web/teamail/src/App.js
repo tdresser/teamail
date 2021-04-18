@@ -1,6 +1,10 @@
 import logo from './logo.svg';
 import './App.css';
 
+async mockFetchIsh() {
+  return "Not really fetch";
+}
+
 function App() {
   return (
     <div className="App">
