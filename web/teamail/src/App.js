@@ -1,23 +1,25 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import Module from './Main'
+
 import './App.css';
 
+new Module().then(module => {
+  console.log(module);
+});
+
 function App() {
+  const cardOffset = {x:0,y:0}; //Module._getCardOffset();
+  console.log(cardOffset);
+
+  const cardStyle = {
+    width:"100px",
+    height:"100px",
+    boxShadow: "1px 1px 3px",
+    transform: "translate(100px, 100px)"
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div id="card" style={cardStyle}></div>
     </div>
   );
 }

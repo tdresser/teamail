@@ -1,5 +1,6 @@
 #include <emscripten.h>
 #include <emscripten/val.h>
+#include <emscripten/bind.h>
 #include <stdio.h>
 #include <string>
 
@@ -7,26 +8,35 @@ using namespace emscripten;
 using namespace std;
 
 string getStringCC() {
-  printf("A\n");
   val window = val::global("window");
-  printf("B\n");
-
   val str = window.call<val>("getString");
-  printf("C\n");
-
-  //val navigator = val::global("navigator");
-  //val userAgent = navigator["userAgent"];
 
   return str.as<string>();
 }
 
-/*EM_JS(char*, getStringCC, (), {
-  let jsString =  getString();
-  let lengthBytes = lengthBytesUTF8(jsString)+1;
-  let stringOnWasmHeap = _malloc(lengthBytes);
-  stringToUTF8(jsString, stringOnWasmHeap, lengthBytes);
-  return stringOnWasmHeap;
-});*/
+struct PointS {
+    float x;
+    float y;
+};
+
+class Point : public PointS {
+    public:
+      Point(float x, float y) {
+          PointS::x = x;
+          PointS::y = y;
+      };
+};
+
+EMSCRIPTEN_BINDINGS(geometry) {
+  class_<PointS>("Point")
+    .property("x", &PointS::x)
+    .property("y", &PointS::y);
+};
+
+EMSCRIPTEN_KEEPALIVE 
+extern "C" PointS getCardOffset() {
+    return static_cast<PointS>(Point(200, 300));
+}
 
 EMSCRIPTEN_KEEPALIVE 
 extern "C" int main() {
