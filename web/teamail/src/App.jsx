@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
-import Module from './Main'
 
 import './App.css';
 
-new Module().then(module => {
-  console.log(module);
-});
+//new Module().then(module => {
+//  console.log(module);
+//});
 
 function App() {
   const cardOffset = {x:0,y:0}; //Module._getCardOffset();
