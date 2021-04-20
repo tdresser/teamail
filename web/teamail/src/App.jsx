@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 
 import './App.css';
 
-//new Module().then(module => {
-//  console.log(module);
-//});
+Module.onRuntimeInitialized = () => {
+  console.log(Module._getCardOffset());
+}
 
 function App() {
-  const cardOffset = {x:0,y:0}; //Module._getCardOffset();
+  const cardOffset = {x:0,y:0}; 
   console.log(cardOffset);
 
   const cardStyle = {
