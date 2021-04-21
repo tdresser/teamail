@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 
 import './App.css';
 
-Module.onRuntimeInitialized = () => {
+window.module = Module.onRuntimeInitialized = (e) => {
+  console.log("BEFORE");
   console.log(Module._getCardOffset());
+  console.log("AFTER")
 }
 
 function App() {
-  const cardOffset = {x:0,y:0}; 
-  console.log(cardOffset);
+  //const cardOffset = {x:0,y:0}; 
+  //console.log(cardOffset);
 
   const cardStyle = {
     width:"100px",

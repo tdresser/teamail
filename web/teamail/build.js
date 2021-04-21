@@ -1,4 +1,4 @@
-const { exec } = require("child_process");
+const { execSync } = require("child_process");
 const fs = require('fs');
 
 // This currently builds then serves the C++ and JS.
@@ -10,35 +10,25 @@ const serverConfig = {
 }
 
 function execLog(x) {
-  exec(x, (error, stdout, stderr) => {
+  execSync(x, (error, stdout, stderr) => {
     if (error) {
         console.log(`error: ${error.message}`);
         return;
     }
     if (stderr) {
         console.log(`stderr: ${stderr}`);
-        return;
     }
     console.log(`stdout: ${stdout}`);
   });
 }
 
+// TODO: handle errors better.
 execLog("cd ../../cpp && ./build.sh");
 
-exec("cd ../../cpp && emcmake cmake -B out -GNinja", (error, stdout, stderr) => {
-    if (error) {
-        console.log(`error: ${error.message}`);
-        return;
-    }
-    if (stderr) {
-        console.log(`stderr: ${stderr}`);
-        return;
-    }
-    console.log(`stdout: ${stdout}`);
-});
+console.log("serving")
 
 require('esbuild').serve(serverConfig, {
-  entryPoints: ['src/App.jsx', 'src/index.jsx'],
+  entryPoints: ['src/index.jsx', 'src/Bindings.js'],
   bundle: true,
   outdir: 'build',
 }).catch(() => process.exit(1));

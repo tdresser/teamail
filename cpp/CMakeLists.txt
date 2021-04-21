@@ -5,7 +5,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
 add_executable (Main main.cc test.cc)
 
 set(EMS
-    "SHELL:-s EXTRA_EXPORTED_RUNTIME_METHODS=['ccall'] -s -s ENVIRONMENT='web'"
+    "SHELL:-s EXTRA_EXPORTED_RUNTIME_METHODS=['ccall'] -s ENVIRONMENT='web' -s SAFE_HEAP=1 -s ALLOW_MEMORY_GROWTH=1"
     # -s MODULARIZE=1 -s USE_ES6_IMPORT_META=0  EXPORT_ES6=1
 )
 target_compile_options(Main PRIVATE ${EMS})
