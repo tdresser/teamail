@@ -9,9 +9,7 @@ using string = std::string;
 string getStringCC()
 {
   val window = val::global("window");
-  printf("About to get string\n");
   val str = window.call<val>("getString");
-  printf("Got string\n");
 
   return str.as<string>();
 }
@@ -21,7 +19,7 @@ struct PointS
   float x;
   float y;
 };
-/*
+
 class Point : public PointS
 {
 public:
@@ -30,17 +28,14 @@ public:
     PointS::x = x;
     PointS::y = y;
   };
-};*/
+};
 
 extern "C" PointS getCardOffset()
 {
-  PointS test;
-  test.x = 100;
-  test.y = 110;
-  return test;
+  return Point(100, 110);
 }
 
-extern "C" int main()
+extern "C" int testGetString()
 {
   printf("%s\n", getStringCC().c_str());
   return 7;
@@ -53,4 +48,5 @@ EMSCRIPTEN_BINDINGS(geometry)
       .field("y", &PointS::y);
 
   function<PointS>("getCardOffset", &getCardOffset);
+  function<int>("testGetString", &testGetString);
 };

@@ -3,7 +3,7 @@ using namespace emscripten;
 
 extern "C" int test()
 {
-    return 50;
+    return 50000;
 }
 
 EMSCRIPTEN_BINDINGS(test)

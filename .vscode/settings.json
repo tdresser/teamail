@@ -4,7 +4,7 @@
         "commands": [
             {
                 "match": "\\.cc$", // TODO: not working.
-                "cmd": "cpp/build.sh"
+                "cmd": "./cpp/build.sh"
             }
         ]
     },
