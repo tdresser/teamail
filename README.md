@@ -1,5 +1,5 @@
 # teamail
 
-deps/emsdk/emsdk install latest
-deps/emsdk/emsdk activate latest
-source deps/emsdk/emsdk_env.sh
+For wasm debugging, make sure to set up the extension.
+For WSL, Tim uses.
+/home/tim/ \\wsl$\Ubuntu\home\tim\

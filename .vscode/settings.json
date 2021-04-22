@@ -1,0 +1,12 @@
+{
+    "files.autoSave": "onFocusChange",
+    "emeraldwalk.runonsave": {
+        "commands": [
+            {
+                "match": "\\.cc$", // TODO: not working.
+                "cmd": "cpp/build.sh"
+            }
+        ]
+    },
+    "editor.formatOnSave": true
+}

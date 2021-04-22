@@ -1,11 +1,10 @@
-#include <emscripten.h>
 #include <emscripten/val.h>
 #include <emscripten/bind.h>
 #include <stdio.h>
 #include <string>
 
 using namespace emscripten;
-using namespace std;
+using string = std::string;
 
 string getStringCC()
 {
@@ -33,25 +32,25 @@ public:
   };
 };*/
 
-EMSCRIPTEN_BINDINGS(geometry)
-{
-  class_<PointS>("Point")
-      .property("x", &PointS::x)
-      .property("y", &PointS::y);
-};
-
-EMSCRIPTEN_KEEPALIVE
 extern "C" PointS getCardOffset()
 {
   PointS test;
-  test.x = 10;
-  test.y = 11;
+  test.x = 100;
+  test.y = 110;
   return test;
 }
 
-EMSCRIPTEN_KEEPALIVE
 extern "C" int main()
 {
   printf("%s\n", getStringCC().c_str());
   return 7;
 }
+
+EMSCRIPTEN_BINDINGS(geometry)
+{
+  value_object<PointS>("Point")
+      .field("x", &PointS::x)
+      .field("y", &PointS::y);
+
+  function<PointS>("getCardOffset", &getCardOffset);
+};

@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import './App.css';
 
-window.module = Module.onRuntimeInitialized = (e) => {
-  console.log("BEFORE");
-  console.log(Module._getCardOffset());
-  console.log("AFTER")
-}
-
 function App() {
-  //const cardOffset = {x:0,y:0}; 
-  //console.log(cardOffset);
+  const [cardOffset, setCardOffset] = useState({x:0, y:0});
+
+  useEffect(() => {
+    Module.onRuntimeInitialized = (e) => {
+      setCardOffset(Module.getCardOffset())
+    }
+  });
 
   const cardStyle = {
     width:"100px",
     height:"100px",
     boxShadow: "1px 1px 3px",
-    transform: "translate(100px, 100px)"
+    transform: "translate(" + cardOffset.x + "px, " + cardOffset.y + "px)"
   }
   return (
     <div className="App">
