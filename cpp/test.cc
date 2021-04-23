@@ -1,6 +1,12 @@
-#include <emscripten.h>
+#include <emscripten/bind.h>
+using namespace emscripten;
 
-EMSCRIPTEN_KEEPALIVE 
-extern "C" int test() {
-    return 5;
+extern "C" int test()
+{
+    return 50000;
+}
+
+EMSCRIPTEN_BINDINGS(test)
+{
+    function("test", &test);
 }

@@ -2,10 +2,22 @@ cmake_minimum_required(VERSION 3.16)
 
 project(Teamail)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
-add_executable (Main main.cc test.cc)
+add_executable (Main 
+    main.cc 
+    test.cc
+)
 
+# -s SAFE_HEAP is another option.
 set(EMS
-    "SHELL:-s EXTRA_EXPORTED_RUNTIME_METHODS=['ccall','cwrap']"
+    "SHELL: 
+    -s ENVIRONMENT='web' 
+    -fsanitize=undefined
+    -fsanitize=address 
+    -g3
+    -s ALLOW_MEMORY_GROWTH
+    -s TOTAL_MEMORY=278331392"
+    # -s MODULARIZE=1 -s USE_ES6_IMPORT_META=0  EXPORT_ES6=1 
+    # -s EXTRA_EXPORTED_RUNTIME_METHODS=['ccall']
 )
 target_compile_options(Main PRIVATE ${EMS})
 target_link_options(Main PRIVATE ${EMS})
