@@ -7,4 +7,6 @@ require('esbuild').serve(serverConfig, {
   entryPoints: ['src/index.jsx', 'src/Bindings.js'],
   bundle: true,
   outdir: 'build',
+  target: 'esnext',
+  sourcemap: 'external',
 }).catch(() => process.exit(1));

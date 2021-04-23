@@ -32,7 +32,7 @@ public:
 
 extern "C" PointS getCardOffset()
 {
-  return Point(100, 110);
+  return Point(100, 120);
 }
 
 extern "C" int testGetString()

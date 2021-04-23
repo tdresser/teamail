@@ -3,7 +3,7 @@
     "emeraldwalk.runonsave": {
         "commands": [
             {
-                "match": "\\.cc$", // TODO: not working.
+                "match": "\\.cc$",
                 "cmd": "./cpp/build.sh"
             }
         ]
