@@ -1,3 +1,3 @@
-window.getString = () => {
+window.getString = (): string => {
   return 'Not really fetch';
 };
