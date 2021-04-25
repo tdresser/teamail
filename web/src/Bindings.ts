@@ -1,3 +1,3 @@
-export function getString() {
+window.getString = () => {
   return 'Not really fetch';
-}
+};
