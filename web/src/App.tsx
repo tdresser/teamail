@@ -2,15 +2,13 @@ import React, { useEffect, useState } from 'react';
 
 import './App.css';
 
-//tsignore
-// let Module: ModuleType = Module; TODO
-
 function App() {
   const [cardOffset, setCardOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     Module.onRuntimeInitialized = () => {
       setCardOffset(Module.getCardOffset());
+      Module.testGetString();
     };
   });
 
