@@ -4,6 +4,7 @@
 #include <string>
 
 using namespace emscripten;
+
 using string = std::string;
 
 string getStringCC()
