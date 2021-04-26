@@ -5,10 +5,13 @@ const serverConfig = {
 
 require('esbuild')
   .serve(serverConfig, {
-    entryPoints: ['src/index.jsx', 'src/Bindings.js'],
+    entryPoints: ['src/index.tsx', 'src/Bindings.ts'],
     bundle: true,
     outdir: 'build',
     target: 'esnext',
     sourcemap: 'external',
   })
-  .catch(() => process.exit(1));
+  .catch((e) => {
+    console.log(e);
+    process.exit(1);
+  });

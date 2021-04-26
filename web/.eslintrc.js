@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  ignorePatterns: ['.eslintrc.js', 'tsconfig.json', 'package.json'],
+  ignorePatterns: ['.eslintrc.js', 'tsconfig.json', 'package.json', 'build.js'],
   extends: ['eslint:recommended', 'plugin:@typescript-eslint/recommended', 'prettier'],
   parser: '@typescript-eslint/parser',
   parserOptions: {

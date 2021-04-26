@@ -1,10 +1,11 @@
 #include <emscripten/bind.h>
 #include <emscripten/val.h>
 #include <stdio.h>
+#include <nlohmann/json.hpp>
 #include <string>
 
 using namespace emscripten;
-
+using json = nlohmann::json;
 using string = std::string;
 
 string getStringCC() {
@@ -14,21 +15,26 @@ string getStringCC() {
   return str.as<string>();
 }
 
-struct PointS {
-  float x;
-  float y;
-};
-
-class Point : public PointS {
+class Point {
  public:
-  Point(float x, float y) {
-    PointS::x = x;
-    PointS::y = y;
-  };
+  Point(float x, float y) : _x(x), _y(y){};
+
+  float x() const { return _x; }
+  float y() const { return _y; }
+
+ private:
+  float _x;
+  float _y;
 };
 
-extern "C" PointS getCardOffset() {
-  return Point(100, 120);
+void to_json(json& j, const Point& p) {
+  j = json{{"x", p.x()}, {"y", p.y()}};
+}
+
+extern string getCardOffset() {
+  json j;
+  to_json(j, Point(100, 120));
+  return to_string(j);
 }
 
 extern "C" int testGetString() {
@@ -37,8 +43,6 @@ extern "C" int testGetString() {
 }
 
 EMSCRIPTEN_BINDINGS(geometry) {
-  value_object<PointS>("Point").field("x", &PointS::x).field("y", &PointS::y);
-
-  function<PointS>("getCardOffset", &getCardOffset);
+  function<string>("getCardOffset", &getCardOffset);
   function<int>("testGetString", &testGetString);
 };
