@@ -40,6 +40,12 @@ void from_json(const json& j, Point& p) {
 
 enum class ActionType { TouchStart, TouchMove };
 
+NLOHMANN_JSON_SERIALIZE_ENUM(ActionType,
+                             {
+                                 {ActionType::TouchStart, "touchstart"},
+                                 {ActionType::TouchMove, "touchmove"},
+                             });
+
 class Action {
  public:
   void init(ActionType type, Point point) {
@@ -81,12 +87,12 @@ extern "C" int testGetString() {
 
   json action_json_string = R"(
     {
-      "action": 1,
-      "point": {x: 17, y: 19}
+      "type": 1,
+      "point": {"x": 17, "y": 19}
     }
   )"_json;
   Action recovered = action_json_string.get<Action>();
-  printf("Recovered JSON: %d, %f, %f", action.type(), action.point().x(),
+  printf("Recovered JSON: %d, %f, %f\n", action.type(), action.point().x(),
          action.point().y());
 
   printf("%s\n", getStringCC().c_str());
