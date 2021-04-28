@@ -9,7 +9,11 @@ function App(): React.ReactElement {
     Module.onRuntimeInitialized = (): void => {
       const offset = JSON.parse(Module.getCardOffset());
       setCardOffset({ x: offset.x, y: offset.y });
-      Module.testGetString();
+      try {
+        Module.testGetString();
+      } catch (e) {
+        console.log(Module.getExceptionMessage(e));
+      }
     };
   });
 

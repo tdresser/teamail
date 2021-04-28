@@ -17,77 +17,84 @@ string getStringCC() {
 
 class Point {
  public:
-  void init(float x, float y) {
-    _x = x;
-    _y = y;
-  }
+  Point(float x, float y) : _x(x), _y(y) {}
+  Point() {}
 
   float x() const { return _x; }
   float y() const { return _y; }
 
+  void to_json(json& j) const { j = json{{"x", _x}, {"y", _y}}; }
+
+  void from_json(const json& j) {
+    j.at("x").get_to(_x);
+    j.at("y").get_to(_y);
+  }
+
  private:
-  float _x;
-  float _y;
+  float _x = 0;
+  float _y = 0;
 };
 
 void to_json(json& j, const Point& p) {
-  j = json{{"x", p.x()}, {"y", p.y()}};
+  p.to_json(j);
 }
 
 void from_json(const json& j, Point& p) {
-  p.init(j.at("x").get<float>(), j.at("y").get<float>());
+  p.from_json(j);
 }
 
-enum class ActionType { TouchStart, TouchMove };
+enum class ActionType { Unknown, TouchStart, TouchMove };
 
 NLOHMANN_JSON_SERIALIZE_ENUM(ActionType,
                              {
+                                 {ActionType::Unknown, "unknown"},
                                  {ActionType::TouchStart, "touchstart"},
                                  {ActionType::TouchMove, "touchmove"},
                              });
 
 class Action {
  public:
-  void init(ActionType type, Point point) {
-    _type = type;
-    _point = point;
-  }
+  Action(ActionType type, Point point) : _type(type), _point(point) {}
+  Action(){};
   ActionType type() const { return _type; };
   const Point& point() const { return _point; }
+  void to_json(json& j) const { j = json{{"type", _type}, {"point", _point}}; }
+  void from_json(const json& j) {
+    j.at("type").get_to(_type);
+    j.at("point").get_to(_point);
+  }
 
  private:
   ActionType _type;
   Point _point;
 };
 
+// TODO: maybe generate this with a macro?
 void to_json(json& j, const Action& action) {
-  j = json{{"type", action.type()}, {"point", action.point()}};
+  action.to_json(j);
 }
 
 void from_json(const json& j, Action& action) {
-  action.init(j.at("type").get<ActionType>(), j.at("point").get<Point>());
+  action.from_json(j);
 }
 
 extern string getCardOffset() {
   json j;
-  Point p;
-  p.init(100, 120);
+  Point p(100, 120);
   to_json(j, p);
   return to_string(j);
 }
 
 extern "C" int testGetString() {
-  Point point;
-  point.init(10, 11);
-  Action action;
-  action.init(ActionType::TouchStart, point);
+  Point point(10, 11);
+  Action action(ActionType::TouchStart, point);
   json j;
   to_json(j, action);
   printf("%s\n", to_string(j).c_str());
 
   json action_json_string = R"(
     {
-      "type": 1,
+      "type": "touchstart",
       "point": {"x": 17, "y": 19}
     }
   )"_json;
