@@ -39,5 +39,8 @@
   },
   "C_Cpp.clang_format_fallbackStyle": "Chromium",
   "cmake.sourceDirectory": "${workspaceFolder}/cpp",
-  "cmake.clearOutputBeforeBuild": false
+  "cmake.clearOutputBeforeBuild": false,
+  "files.associations": {
+    "numeric": "cpp"
+  }
 }
