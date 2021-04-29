@@ -2,13 +2,18 @@ import React, { useEffect, useState } from 'react';
 
 import './App.css';
 
-function App() {
+function App(): React.ReactElement {
   const [cardOffset, setCardOffset] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
-    Module.onRuntimeInitialized = () => {
-      setCardOffset(Module.getCardOffset());
-      Module.testGetString();
+    Module.onRuntimeInitialized = (): void => {
+      const offset = JSON.parse(Module.getCardOffset());
+      setCardOffset({ x: offset.x, y: offset.y });
+      try {
+        Module.testGetString();
+      } catch (e) {
+        console.log(Module.getExceptionMessage(e));
+      }
     };
   });
 

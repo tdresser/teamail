@@ -37,5 +37,7 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "C_Cpp.clang_format_fallbackStyle": "Chromium"
+  "C_Cpp.clang_format_fallbackStyle": "Chromium",
+  "cmake.sourceDirectory": "${workspaceFolder}/cpp",
+  "cmake.clearOutputBeforeBuild": false
 }

@@ -1,5 +1,6 @@
-declare var Module: {
-  onRuntimeInitialized: any;
-  getCardOffset: any;
-  testGetString: any;
+declare const Module: {
+  onRuntimeInitialized: () => void;
+  getCardOffset: () => string;
+  testGetString: () => number;
+  getExceptionMessage: (exceptionNumber: number) => string;
 };

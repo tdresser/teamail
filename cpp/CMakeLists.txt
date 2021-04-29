@@ -5,17 +5,35 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
 add_executable (Main 
     main.cc 
     test.cc
+    util.cc
 )
+
+include(FetchContent)
+
+FetchContent_Declare(json
+  GIT_REPOSITORY https://github.com/ArthurSonzogni/nlohmann_json_cmake_fetchcontent
+  GIT_TAG v3.7.3)
+
+FetchContent_GetProperties(json)
+if(NOT json_POPULATED)
+  FetchContent_Populate(json)
+  add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
+
+target_link_libraries(Main PRIVATE nlohmann_json::nlohmann_json)
+
+#find_package(nlohmann_json 3.2.0 REQUIRED)
 
 # -s SAFE_HEAP is another option.
 set(EMS
     "SHELL: 
     -s ENVIRONMENT='web' 
-    -fsanitize=undefined
-    -fsanitize=address 
     -g3
     -s ALLOW_MEMORY_GROWTH
-    -s TOTAL_MEMORY=278331392"
+    -fexceptions" # exceptions are super slow and costly, TODO, disable them.
+    # -s TOTAL_MEMORY=278331392
+    # -fsanitize=undefined
+    # -fsanitize=address 
     # -s MODULARIZE=1 -s USE_ES6_IMPORT_META=0  EXPORT_ES6=1 
     # -s EXTRA_EXPORTED_RUNTIME_METHODS=['ccall']
 )
