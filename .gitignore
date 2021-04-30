@@ -7,3 +7,5 @@ web/teamail/src/Main.js
 web/teamail/src/Main.mjs
 web/teamail/src/Main.wasm
 deps
+compile_commands.json
+.cache

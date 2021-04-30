@@ -1,6 +1,6 @@
 #include <emscripten/bind.h>
 #include <emscripten/val.h>
-#include <stdio.h>
+#include <cstdio>
 #include <nlohmann/json.hpp>
 #include <string>
 
@@ -50,7 +50,7 @@ extern "C" int testGetString() {
 State state;
 
 State reduce(Action action) {
-  action.reduce(state);
+  return action.reduce(state);
 }
 
 EMSCRIPTEN_BINDINGS(geometry) {

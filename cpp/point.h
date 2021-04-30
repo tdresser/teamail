@@ -6,10 +6,10 @@ using json = nlohmann::json;
 class Point {
  public:
   Point(float x, float y) : _x(x), _y(y) {}
-  Point() {}
+  Point() = default;
 
-  float x() const { return _x; }
-  float y() const { return _y; }
+  [[nodiscard]] float x() const { return _x; }
+  [[nodiscard]] float y() const { return _y; }
 
   void to_json(json& j) const { j = json{{"x", _x}, {"y", _y}}; }
 

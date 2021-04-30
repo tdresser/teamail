@@ -36,5 +36,12 @@
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+
+  "clangd.arguments": [
+    "-log=verbose",
+    "-pretty",
+    "--background-index",
+    "--compile-commands-dir=cpp/out"
+  ]
 }
