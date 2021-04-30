@@ -1,14 +1,14 @@
-#include <emscripten/bind.h>
-#include <emscripten/val.h>
 #include <cstdio>
-#include <nlohmann/json.hpp>
 #include <string>
+#include "emscripten/bind.h"
+#include "emscripten/val.h"
+#include "nlohmann/json.hpp"
 
 #include "action.h"
 #include "point.h"
 #include "state.h"
 
-using namespace emscripten;
+using val = emscripten::val;
 using json = nlohmann::json;
 using string = std::string;
 
@@ -22,7 +22,7 @@ string getStringCC() {
 extern string getCardOffset() {
   json j;
   Point p(100, 120);
-  to_json(j, p);
+  p.toJson(j);
   return to_string(j);
 }
 
@@ -30,16 +30,17 @@ extern "C" int testGetString() {
   Point point(10, 11);
   Action action(ActionType::TouchStart, point);
   json j;
-  to_json(j, action);
+  action.toJson(j);
+
   printf("%s\n", to_string(j).c_str());
 
-  json action_json_string = R"(
+  json actionJsonString = R"(
     {
       "type": "touchstart",
       "point": {"x": 17, "y": 19}
     }
   )"_json;
-  Action recovered = action_json_string.get<Action>();
+  auto recovered = actionJsonString.get<Action>();
   printf("Recovered JSON: %d, %f, %f\n", action.type(), action.point().x(),
          action.point().y());
 
@@ -47,13 +48,11 @@ extern "C" int testGetString() {
   return 7;
 }
 
-State state;
-
 State reduce(Action action) {
-  return action.reduce(state);
+  return action.reduce(State::instance());
 }
 
 EMSCRIPTEN_BINDINGS(geometry) {
-  function<string>("getCardOffset", &getCardOffset);
-  function<int>("testGetString", &testGetString);
+  emscripten::function<string>("getCardOffset", &getCardOffset);
+  emscripten::function<int>("testGetString", &testGetString);
 };

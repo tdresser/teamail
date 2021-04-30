@@ -5,7 +5,6 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
 add_executable (Main 
     main.cc 
     test.cc
-    util.cc
 )
 
 include(FetchContent)

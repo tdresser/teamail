@@ -1,42 +1,38 @@
+# Restart clangd after modifying. (In vscode, clangd: Restart Language Server).
+
 Checks: >
-  clang-diagnostic-*,
-  clang-analyzer-*,
-  cppcoreguidelines-*,
-  modernize-*,
+  *,
+  -llvmlibc*,
+  -llvm-include-order,
   -modernize-use-trailing-return-type,
   -cppcoreguidelines-avoid-magic-numbers,
-  -misc-definitions-in-headers
-  
+  -*-avoid-c-arrays, 
+  -readability-magic-numbers,
+  -misc-definitions-in-headers,
+  -modernize-use-auto,
+  -cppcoreguidelines-pro-type-vararg, 
+  -hicpp-vararg,
+  -fuchsia-default-arguments-calls,
+  -fuchsia-statically-constructed-objects,
+  -*struct-pack-align,
+  -cert-err58-cpp,
+  -cppcoreguidelines-avoid-non-const-global-variables,
+  -readability-convert-member-functions-to-static,
+  -cppcoreguidelines-macro-usage,
+  -cppcoreguidelines-pro-type-reinterpret-cast,
+  -performance-no-int-to-ptr,
+
+# Don't forget the trailing comma above.
+
 WarningsAsErrors: true
-HeaderFilterRegex: ''
-AnalyzeTemporaryDtors: false
-FormatStyle:     google
+FormatStyle:     file
+HeaderFilterRegex: '.*cpp.*'
 CheckOptions:
-  - key:             cert-dcl16-c.NewSuffixes
-    value:           'L;LL;LU;LLU'
-  - key:             cert-oop54-cpp.WarnOnlyIfThisHasSuspiciousField
-    value:           '0'
-  - key:             cppcoreguidelines-explicit-virtual-functions.IgnoreDestructors
-    value:           '1'
-  - key:             cppcoreguidelines-non-private-member-variables-in-classes.IgnoreClassesWithAllMemberVariablesBeingPublic
-    value:           '1'
-  - key:             google-readability-braces-around-statements.ShortStatementLines
-    value:           '1'
-  - key:             google-readability-function-size.StatementThreshold
-    value:           '800'
-  - key:             google-readability-namespace-comments.ShortNamespaceLines
-    value:           '10'
-  - key:             google-readability-namespace-comments.SpacesBeforeComments
-    value:           '2'
-  - key:             modernize-loop-convert.MaxCopySize
-    value:           '16'
-  - key:             modernize-loop-convert.MinConfidence
-    value:           reasonable
-  - key:             modernize-loop-convert.NamingStyle
-    value:           CamelCase
-  - key:             modernize-pass-by-value.IncludeStyle
-    value:           llvm
-  - key:             modernize-replace-auto-ptr.IncludeStyle
-    value:           llvm
-  - key:             modernize-use-nullptr.NullMacros
-    value:           'NULL'
+  - { key: readability-identifier-naming.NamespaceCase,       value: lower_case }
+  - { key: readability-identifier-naming.ClassCase,           value: CamelCase  }
+  - { key: readability-identifier-naming.PrivateMemberPrefix, value: _         }
+  - { key: readability-identifier-naming.ClassMemberPrefix, value: s_         }
+  - { key: readability-identifier-naming.StructCase,          value: CamelCase  }
+  - { key: readability-identifier-naming.FunctionCase,        value: camelBack }
+  - { key: readability-identifier-naming.VariableCase,        value: camelBack }
+  - { key: readability-identifier-naming.GlobalConstantCase,  value: UPPER_CASE }

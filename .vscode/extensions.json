@@ -3,6 +3,7 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "llvm-vs-code-extensions.vscode-clangd",
-    "twxs.cmake"
+    "twxs.cmake",
+    "redhat.vscode-yaml"
   ]
 }
