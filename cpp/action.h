@@ -8,12 +8,12 @@
 
 enum class ActionType { Unknown, TouchStart, TouchMove };
 
-NLOHMANN_JSON_SERIALIZE_ENUM(ActionType,
-                             {
-                                 {ActionType::Unknown, "unknown"},
-                                 {ActionType::TouchStart, "touchstart"},
-                                 {ActionType::TouchMove, "touchmove"},
-                             });
+JSON_SERIALIZE_ENUM(ActionType,
+                    {
+                        {ActionType::Unknown, "unknown"},
+                        {ActionType::TouchStart, "touchstart"},
+                        {ActionType::TouchMove, "touchmove"},
+                    });
 
 class Action {
  public:
