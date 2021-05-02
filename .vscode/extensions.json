@@ -1,3 +1,9 @@
 {
-    "recommendations": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"]
-  }
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "llvm-vs-code-extensions.vscode-clangd",
+    "twxs.cmake",
+    "redhat.vscode-yaml"
+  ]
+}

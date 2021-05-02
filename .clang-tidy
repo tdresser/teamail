@@ -1,0 +1,38 @@
+# Restart clangd after modifying. (In vscode, clangd: Restart Language Server).
+
+Checks: >
+  *,
+  -llvmlibc*,
+  -llvm-include-order,
+  -modernize-use-trailing-return-type,
+  -cppcoreguidelines-avoid-magic-numbers,
+  -*-avoid-c-arrays, 
+  -readability-magic-numbers,
+  -misc-definitions-in-headers,
+  -modernize-use-auto,
+  -cppcoreguidelines-pro-type-vararg, 
+  -hicpp-vararg,
+  -fuchsia-default-arguments-calls,
+  -fuchsia-statically-constructed-objects,
+  -*struct-pack-align,
+  -cert-err58-cpp,
+  -cppcoreguidelines-avoid-non-const-global-variables,
+  -readability-convert-member-functions-to-static,
+  -cppcoreguidelines-macro-usage,
+  -cppcoreguidelines-pro-type-reinterpret-cast,
+  -performance-no-int-to-ptr,
+
+# Don't forget the trailing comma above.
+
+WarningsAsErrors: true
+FormatStyle:     file
+HeaderFilterRegex: '.*cpp.*'
+CheckOptions:
+  - { key: readability-identifier-naming.NamespaceCase,       value: lower_case }
+  - { key: readability-identifier-naming.ClassCase,           value: CamelCase  }
+  - { key: readability-identifier-naming.PrivateMemberPrefix, value: _         }
+  - { key: readability-identifier-naming.ClassMemberPrefix, value: s_         }
+  - { key: readability-identifier-naming.StructCase,          value: CamelCase  }
+  - { key: readability-identifier-naming.FunctionCase,        value: camelBack }
+  - { key: readability-identifier-naming.VariableCase,        value: camelBack }
+  - { key: readability-identifier-naming.GlobalConstantCase,  value: UPPER_CASE }

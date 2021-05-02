@@ -9,6 +9,7 @@
     ]
   },
   "editor.formatOnSave": true,
+  "files.insertFinalNewline": true,
 
   "eslint.validate": [
     "json",
@@ -37,7 +38,11 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "C_Cpp.clang_format_fallbackStyle": "Chromium",
-  "cmake.sourceDirectory": "${workspaceFolder}/cpp",
-  "cmake.clearOutputBeforeBuild": false
+
+  "clangd.arguments": [
+    "-log=verbose",
+    "-pretty",
+    "--background-index",
+    "--compile-commands-dir=cpp/out_web"
+  ]
 }

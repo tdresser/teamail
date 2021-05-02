@@ -1,9 +1,11 @@
 cpp/.ninja_deps
 cpp/.ninja_log
-cpp/out
+cpp/out*
 web/teamail/public/Main.js
 web/teamail/public/Main.wasm
 web/teamail/src/Main.js
 web/teamail/src/Main.mjs
 web/teamail/src/Main.wasm
 deps
+compile_commands.json
+.cache
