@@ -2,10 +2,31 @@
 
 cd `dirname $0`
 
-mkdir -p ../web/build
+if [[ $1 ]]; then
+  TARGET=$1
+else
+  TARGET=`cat default_build.txt`
+fi
 
-emcmake cmake -B out -GNinja
-emmake ninja -C out
+case $TARGET in 
+  Test) 
+    mkdir -p out_test
+    cmake -GNinja -S . -B out_test && \
+    ninja -C out_test Lib
+  ;;
+  Web)
+    mkdir -p ../web/build
+    mkdir -p out_web
 
-cp out/bin/Main.js ../web/build/
-cp out/bin/Main.wasm ../web/build/
+    emcmake cmake -GNinja -S . -B out_web && \
+    emmake ninja -C out_web Web
+
+    cp out_web/bin/Main.js ../web/build/
+    cp out_web/bin/Main.wasm ../web/build/
+  ;;
+  *)
+    echo "Please provide a supported target (web or test)."
+esac
+
+
+

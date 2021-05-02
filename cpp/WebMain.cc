@@ -1,8 +1,8 @@
 #include <cstdio>
+#include <nlohmann/json.hpp>
 #include <string>
 #include "emscripten/bind.h"
 #include "emscripten/val.h"
-#include "nlohmann/json.hpp"
 
 #include "Action.h"
 #include "Point.h"

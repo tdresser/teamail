@@ -2,6 +2,8 @@
 
 #include <memory>
 #include <nlohmann/json.hpp>
+
+#include "JsonUtil.h"
 #include "Point.h"
 
 using json = nlohmann::json;
