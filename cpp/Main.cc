@@ -4,9 +4,9 @@
 #include "emscripten/val.h"
 #include "nlohmann/json.hpp"
 
-#include "action.h"
-#include "point.h"
-#include "state.h"
+#include "Action.h"
+#include "Point.h"
+#include "State.h"
 
 using val = emscripten::val;
 using json = nlohmann::json;

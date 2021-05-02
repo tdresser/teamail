@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <nlohmann/json.hpp>
-#include "point.h"
+#include "Point.h"
 
 using json = nlohmann::json;
 

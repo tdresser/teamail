@@ -1,7 +1,7 @@
 #pragma once
 
 #include <nlohmann/json.hpp>
-#include "emscripten_util.h"
+#include "EmscriptenUtil.h"
 using json = nlohmann::json;
 
 class Point {

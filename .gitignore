@@ -1,6 +1,6 @@
 cpp/.ninja_deps
 cpp/.ninja_log
-cpp/out
+cpp/out*
 web/teamail/public/Main.js
 web/teamail/public/Main.wasm
 web/teamail/src/Main.js

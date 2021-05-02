@@ -43,6 +43,6 @@
     "-log=verbose",
     "-pretty",
     "--background-index",
-    "--compile-commands-dir=cpp/out"
+    "--compile-commands-dir=cpp/out_web"
   ]
 }

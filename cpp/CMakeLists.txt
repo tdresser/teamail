@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.16)
 project(Teamail)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
 add_executable (Main 
-    main.cc 
-    test.cc
+    Main.cc 
+    Test.cc
 )
 
 include(FetchContent)

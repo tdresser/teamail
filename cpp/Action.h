@@ -2,9 +2,9 @@
 #pragma once
 
 #include <nlohmann/json.hpp>
-#include "emscripten_util.h"
-#include "point.h"
-#include "state.h"
+#include "EmscriptenUtil.h"
+#include "Point.h"
+#include "State.h"
 
 enum class ActionType { Unknown, TouchStart, TouchMove };
 
@@ -19,8 +19,7 @@ class Action {
  public:
   Action(ActionType type, Point point) : _type(type), _point(point) {}
   Action() = default;
-  ;
-  // TODO(tdresser) - make this virtual, and use polymorphism?
+
   State reduce(State state) { return state; }
   [[nodiscard]] ActionType type() const { return _type; };
   [[nodiscard]] const Point& point() const { return _point; }
