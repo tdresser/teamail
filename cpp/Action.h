@@ -1,9 +1,10 @@
 
 #pragma once
 
-#include <nlohmann/json.hpp>
 #include "Point.h"
 #include "State.h"
+
+#include "nlohmann/json.hpp"
 
 enum class ActionType { Unknown, TouchStart, TouchMove };
 
@@ -30,5 +31,5 @@ class Action {
   Point _point;
 };
 
-TO_JSON(Action, action);
-FROM_JSON(Action, action);
+TO_JSON_DECLARE(Action, action);
+FROM_JSON_DECLARE(Action, action);

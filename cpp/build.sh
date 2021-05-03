@@ -10,8 +10,8 @@ fi
 
 echo $TARGET
 
-case $TARGET in 
-  Test) 
+case $TARGET in
+  Test)
     mkdir -p out_test
     cmake -GNinja -B out_test && \
     ninja -C out_test Lib
@@ -23,8 +23,8 @@ case $TARGET in
     emcmake cmake -GNinja -B out_web && \
     emmake ninja -C out_web Web
 
-    cp out_web/bin/Main.js ../web/build/
-    cp out_web/bin/Main.wasm ../web/build/
+    cp out_web/bin/Web.js ../web/build/
+    cp out_web/bin/Web.wasm ../web/build/
   ;;
   *)
     echo "Please provide a supported target (web or test)."
