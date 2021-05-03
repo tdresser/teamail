@@ -1,10 +1,17 @@
+# TODO - strip trailing spaces.
+
 cmake_minimum_required(VERSION 3.16)
 
 project(Teamail)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
 
-add_library(Lib
-  Action.cc)
+# Get the absolute path of $ROOT/cpp/deps.
+get_filename_component(deps_dir "./deps"
+                       REALPATH BASE_DIR "${CMAKE_SOURCE_DIR}")
+
+MESSAGE(${deps_dir})
+
+# Fetch Dependencies
+set(FETCHCONTENT_BASE_DIR ${deps_dir})
 
 include(FetchContent)
 
@@ -18,10 +25,18 @@ if(NOT json_POPULATED)
   add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
 endif()
 
+# Lib
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
+
+add_library(Lib
+  Action.cc)
+
 target_link_libraries(Lib PRIVATE nlohmann_json::nlohmann_json)
 
-target_include_directories(Lib  
-  PUBLIC $<INSTALL_INTERFACE:json-src/include>)
+target_include_directories(Lib
+  PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/deps/json-src/include>)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
@@ -46,10 +61,14 @@ set_target_properties(Web PROPERTIES
   COMPILE_FLAGS "-m32" 
   LINK_FLAGS "-m32 --bind")
 
-target_include_directories(Web SYSTEM  
-  PRIVATE $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../deps/emsdk/upstream/emscripten/system/include/>
-  PRIVATE $<INSTALL_INTERFACE:json-src/include>
-  PRIVATE foo/bar)
+target_link_libraries(Web PUBLIC Lib)
+#target_link_libraries(Lib PUBLIC nlohmann_json::nlohmann_json)
+
+target_include_directories(Web  
+  PUBLIC 
+    Lib
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/deps/json-src/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../deps/emsdk/upstream/emscripten/system/include/>)
 
 # -s SAFE_HEAP is another option.
 set(EMS

@@ -8,17 +8,19 @@ else
   TARGET=`cat default_build.txt`
 fi
 
+echo $TARGET
+
 case $TARGET in 
   Test) 
     mkdir -p out_test
-    cmake -GNinja -S . -B out_test && \
+    cmake -GNinja -B out_test && \
     ninja -C out_test Lib
   ;;
   Web)
     mkdir -p ../web/build
     mkdir -p out_web
 
-    emcmake cmake -GNinja -S . -B out_web && \
+    emcmake cmake -GNinja -B out_web && \
     emmake ninja -C out_web Web
 
     cp out_web/bin/Main.js ../web/build/
