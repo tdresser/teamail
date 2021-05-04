@@ -21,6 +21,9 @@ Maybe also `libc6-dev-i386-cross`? Or
 
 source deps/emsdk/emsdk_env.sh
 
-# Notes
+# TODO
 
-There's a static assert in emscripten which I've just removed, which is gross. TODO
+There's a static assert in emscripten which I've just removed, which is gross.
+
+Figure out a better way to manage clangd than
+"--compile-commands-dir=cpp/out_test"

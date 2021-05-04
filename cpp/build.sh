@@ -14,7 +14,7 @@ case $TARGET in
   Test)
     mkdir -p out_test
     cmake -GNinja -B out_test && \
-    ninja -C out_test Lib
+    ninja -C out_test Test
   ;;
   Web)
     mkdir -p ../web/build

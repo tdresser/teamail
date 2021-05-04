@@ -17,12 +17,14 @@ include(FetchContent)
 FetchContent_Declare(json
   GIT_REPOSITORY https://github.com/ArthurSonzogni/nlohmann_json_cmake_fetchcontent
   GIT_TAG v3.7.3)
+FetchContent_MakeAvailable(json)
 
-FetchContent_GetProperties(json)
-if(NOT json_POPULATED)
-  FetchContent_Populate(json)
-  add_subdirectory(${json_SOURCE_DIR} ${json_BINARY_DIR} EXCLUDE_FROM_ALL)
-endif()
+FetchContent_Declare(
+  googletest
+  GIT_REPOSITORY https://github.com/google/googletest.git
+  GIT_TAG        release-1.10.0
+)
+FetchContent_MakeAvailable(googletest)
 
 # Lib
 
@@ -36,9 +38,24 @@ target_link_libraries(Lib PUBLIC nlohmann_json::nlohmann_json)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set_target_properties(Lib PROPERTIES
-CXX_STANDARD 20)
+  CXX_STANDARD 20)
 
-# WEB
+# Test
+# https://google.github.io/googletest/quickstart-cmake.html
+enable_testing() # is this needed?
+
+add_executable(Test
+  test/ActionTest.cc)
+
+target_link_libraries(Test
+  PUBLIC
+    Lib
+    gtest_main)
+
+include(GoogleTest)
+gtest_discover_tests(Test)
+
+# Web
 
 add_executable(Web)
 
