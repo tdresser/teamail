@@ -10,6 +10,18 @@ class Point {
   Point(float x, float y) : _x(x), _y(y) {}
   Point() = default;
 
+  inline Point operator-(const Point& p) const {
+    return Point(_x - p.x(), _y - p.y());
+  }
+
+  inline Point operator+(const Point& p) const {
+    return Point(_x + p.x(), _y + p.y());
+  }
+
+  inline bool operator==(const Point& p) const {
+    return _x == p.x() && _y == p.y();
+  }
+
   void toJson(json& j) const;
   void fromJson(const json& j);
 

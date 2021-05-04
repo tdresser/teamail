@@ -1,7 +1,7 @@
 #pragma once
 
-#include <emscripten/bind.h>
 #include <string>
+#include "emscripten/bind.h"
 
 std::string getExceptionMessage(intptr_t exceptionPtr) {
   return std::string(reinterpret_cast<std::exception*>(exceptionPtr)->what());

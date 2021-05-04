@@ -20,7 +20,7 @@ class Action {
   Action(ActionType type, Point point) : _type(type), _point(point) {}
   Action() = default;
 
-  State reduce(State state) { return state; }
+  State reduce(State state);
   [[nodiscard]] ActionType type() const { return _type; };
   [[nodiscard]] const Point& point() const { return _point; }
   void toJson(json& j) const;
