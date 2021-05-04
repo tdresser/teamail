@@ -39,8 +39,8 @@ set_target_properties(Lib PROPERTIES
   CXX_STANDARD 20)
 
 # Test
+
 # https://google.github.io/googletest/quickstart-cmake.html
-enable_testing() # is this needed?
 
 add_executable(Test
   test/ActionTest.cc)
