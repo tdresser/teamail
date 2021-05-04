@@ -45,6 +45,9 @@ set_target_properties(Lib PROPERTIES
 add_executable(Test
   test/ActionTest.cc)
 
+set_target_properties(Test PROPERTIES
+  CXX_STANDARD 20)
+
 target_link_libraries(Test
   PUBLIC
     Lib

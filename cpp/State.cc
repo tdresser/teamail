@@ -3,8 +3,18 @@
 
 using json = nlohmann::json;
 
+std::unique_ptr<State> State::s_instance = nullptr;
+
 void State::toJson(json& j) const {
   j = json{{"transform", _transform}};
+}
+
+void State::setOrigin(Point point) {
+  _origin = point;
+}
+
+void State::setTransform(Point point) {
+  _transform = point;
 }
 
 State& State::instance() {

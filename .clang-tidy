@@ -23,6 +23,7 @@ Checks: >
   -performance-no-int-to-ptr,
   -cppcoreguidelines-owning-memory,
   -*-special-member-functions,
+  -fuchsia-overloaded-operator,
 
 # Don't forget the trailing comma above.
 
