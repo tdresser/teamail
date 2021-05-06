@@ -1,6 +1,6 @@
 declare global {
   interface Window {
-    getString: any;
+    getString: () => string;
   }
 }
 

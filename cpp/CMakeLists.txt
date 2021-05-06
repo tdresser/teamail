@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 project(Teamail)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "bin")
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # Get the absolute path of $ROOT/deps.
 get_filename_component(deps_dir "../deps"
@@ -33,10 +34,28 @@ add_library(Lib STATIC
 
 target_link_libraries(Lib PUBLIC nlohmann_json::nlohmann_json)
 
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+# Emscripten Settings
+if(BUILD STREQUAL "Web")
+  # -s SAFE_HEAP is another option.
+  set(EMS
+    "SHELL:
+    -s ENVIRONMENT='web'
+    -g3
+    -s ALLOW_MEMORY_GROWTH
+    -fexceptions" # exceptions are super slow and costly, TODO, disable them.
+    # -s TOTAL_MEMORY=278331392
+    # -fsanitize=undefined
+    # -fsanitize=address
+    # -s MODULARIZE=1 -s USE_ES6_IMPORT_META=0  EXPORT_ES6=1
+  )
 
-set_target_properties(Lib PROPERTIES
-  CXX_STANDARD 20)
+  target_compile_options(Lib PUBLIC
+    ${EMS}
+    "-m32")
+  target_link_options(Lib PUBLIC ${EMS}
+    "-m32"
+    "--bind")
+endif()
 
 # Test
 
@@ -44,9 +63,6 @@ set_target_properties(Lib PROPERTIES
 
 add_executable(Test
   test/ActionTest.cc)
-
-set_target_properties(Test PROPERTIES
-  CXX_STANDARD 20)
 
 target_link_libraries(Test
   PUBLIC
@@ -62,15 +78,8 @@ add_executable(Web)
 
 target_sources(Web PUBLIC
     WebMain.cc
-    WebTest.cc)
-
-target_compile_options(Web PRIVATE ${EMS})
-target_link_options(Web PRIVATE ${EMS})
-
-set_target_properties(Web PROPERTIES
-  CXX_STANDARD 20
-  COMPILE_FLAGS "-m32"
-  LINK_FLAGS "-m32 --bind")
+    WebTest.cc
+    EmscriptenUtil.cc)
 
 target_link_libraries(Web PUBLIC Lib)
 
@@ -78,15 +87,6 @@ target_include_directories(Web
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/../deps/emsdk/upstream/emscripten/system/include/>)
 
-# -s SAFE_HEAP is another option.
-set(EMS
-    "SHELL:
-    -s ENVIRONMENT='web'
-    -g3
-    -s ALLOW_MEMORY_GROWTH
-    -fexceptions" # exceptions are super slow and costly, TODO, disable them.
-    # -s TOTAL_MEMORY=278331392
-    # -fsanitize=undefined
-    # -fsanitize=address
-    # -s MODULARIZE=1 -s USE_ES6_IMPORT_META=0  EXPORT_ES6=1
-)
+# Global properties.
+set_target_properties(Lib Web Test PROPERTIES
+  CXX_STANDARD 20)

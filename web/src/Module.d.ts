@@ -1,6 +1,5 @@
 declare const Module: {
   onRuntimeInitialized: () => void;
-  getCardOffset: () => string;
-  testGetString: () => number;
+  reduce: (actionJSON: string) => string;
   getExceptionMessage: (exceptionNumber: number) => string;
 };

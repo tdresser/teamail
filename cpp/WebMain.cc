@@ -23,14 +23,18 @@ State reduce(Action action) {
   return action.reduce(State::instance());
 }
 
-State reduceWithActionString(string actionString) {
-  json actionJSON(actionString);
+string reduceWithActionString(const string& actionString) {
+  printf("%s\n", actionString.c_str());
+  json actionJSON = json::parse(actionString);
   Action action;
   action.fromJson(actionJSON);
-  // TODO(tdresser) - copy State objects less.
-  return action.reduce(State::instance());
+
+  State newState = action.reduce(State::instance());
+  json newStateJSON;
+  newState.toJson(newStateJSON);
+  return newStateJSON;
 }
 
 EMSCRIPTEN_BINDINGS(geometry) {
-  emscripten::function<State>("reduce", &reduceWithActionString);
+  emscripten::function<string>("reduce", &reduceWithActionString);
 };
