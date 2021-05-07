@@ -8,10 +8,8 @@ void Action::toJson(json& j) const {
   j = json{{"type", _type}, {"point", _point}};
 }
 void Action::fromJson(const json& j) {
-  printf("A\n");
   j.at("type").get_to(_type);
   j.at("point").get_to(_point);
-  printf("B\n");
 }
 
 State Action::reduce(State state) {

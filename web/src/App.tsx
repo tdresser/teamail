@@ -9,15 +9,17 @@ function App(): React.ReactElement {
 
   useEffect(() => {
     Module.onRuntimeInitialized = (): void => {
-      let state: State;
+      let state: State | null = null;
       try {
         state = reduce(new Action(ActionType.touchstart, new Point(0, 10)));
+        state = reduce(new Action(ActionType.touchmove, new Point(10, 20)));
+        state = reduce(new Action(ActionType.touchmove, new Point(20, 30)));
       } catch (e) {
         console.log(Module.getExceptionMessage(e));
       }
-      console.log('STATE');
+
       console.log(state);
-      console.log('DONE');
+
       /*const offset = JSON.parse(Module.getCardOffset());
       setCardOffset({ x: offset.x, y: offset.y });
       try {

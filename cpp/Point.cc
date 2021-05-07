@@ -10,10 +10,8 @@ void Point::toJson(json& j) const {
 }
 
 void Point::fromJson(const json& j) {
-  std::cerr << "D";
   j.at("x").get_to(_x);
   j.at("y").get_to(_y);
-  std::cerr << "E";
 }
 
 TO_JSON(Point, point);

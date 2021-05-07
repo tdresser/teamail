@@ -24,17 +24,18 @@ State reduce(Action action) {
 }
 
 string reduceWithActionString(const string& actionString) {
-  printf("%s\n", actionString.c_str());
   json actionJSON = json::parse(actionString);
   Action action;
   action.fromJson(actionJSON);
 
   State newState = action.reduce(State::instance());
+
   json newStateJSON;
   newState.toJson(newStateJSON);
-  return newStateJSON;
+
+  return newStateJSON.dump();
 }
 
 EMSCRIPTEN_BINDINGS(geometry) {
-  emscripten::function<string>("reduce", &reduceWithActionString);
+  emscripten::function("reduce", &reduceWithActionString);
 };
