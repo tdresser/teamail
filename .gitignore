@@ -9,3 +9,4 @@ web/teamail/src/Main.wasm
 deps
 compile_commands.json
 .cache
+cpp/default_build.txt

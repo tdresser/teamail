@@ -10,6 +10,7 @@
   },
   "editor.formatOnSave": true,
   "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
 
   "eslint.validate": [
     "json",
@@ -43,6 +44,6 @@
     "-log=verbose",
     "-pretty",
     "--background-index",
-    "--compile-commands-dir=cpp/out_web"
+    "--compile-commands-dir=cpp/out_test"
   ]
 }

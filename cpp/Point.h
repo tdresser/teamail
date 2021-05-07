@@ -1,7 +1,8 @@
 #pragma once
 
-#include <nlohmann/json.hpp>
-#include "EmscriptenUtil.h"
+#include "JsonUtil.h"
+#include "nlohmann/json_fwd.hpp"
+
 using json = nlohmann::json;
 
 class Point {
@@ -9,20 +10,16 @@ class Point {
   Point(float x, float y) : _x(x), _y(y) {}
   Point() = default;
 
+  void toJson(json& j) const;
+  void fromJson(const json& j);
+
   [[nodiscard]] float x() const { return _x; }
   [[nodiscard]] float y() const { return _y; }
-
-  void toJson(json& j) const { j = json{{"x", _x}, {"y", _y}}; }
-
-  void fromJson(const json& j) {
-    j.at("x").get_to(_x);
-    j.at("y").get_to(_y);
-  }
 
  private:
   float _x = 0;
   float _y = 0;
 };
 
-TO_JSON(Point, point);
-FROM_JSON(Point, point);
+TO_JSON_DECLARE(Point, point);
+FROM_JSON_DECLARE(Point, point);

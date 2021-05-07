@@ -6,11 +6,11 @@ Checks: >
   -llvm-include-order,
   -modernize-use-trailing-return-type,
   -cppcoreguidelines-avoid-magic-numbers,
-  -*-avoid-c-arrays, 
+  -*-avoid-c-arrays,
   -readability-magic-numbers,
   -misc-definitions-in-headers,
   -modernize-use-auto,
-  -cppcoreguidelines-pro-type-vararg, 
+  -cppcoreguidelines-pro-type-vararg,
   -hicpp-vararg,
   -fuchsia-default-arguments-calls,
   -fuchsia-statically-constructed-objects,
@@ -21,6 +21,8 @@ Checks: >
   -cppcoreguidelines-macro-usage,
   -cppcoreguidelines-pro-type-reinterpret-cast,
   -performance-no-int-to-ptr,
+  -cppcoreguidelines-owning-memory,
+  -*-special-member-functions,
 
 # Don't forget the trailing comma above.
 

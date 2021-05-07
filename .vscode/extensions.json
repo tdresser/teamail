@@ -4,6 +4,7 @@
     "esbenp.prettier-vscode",
     "llvm-vs-code-extensions.vscode-clangd",
     "twxs.cmake",
-    "redhat.vscode-yaml"
+    "redhat.vscode-yaml",
+    "surajbarkale.ninja"
   ]
 }
