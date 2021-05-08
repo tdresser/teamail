@@ -37,7 +37,7 @@ export interface State {
   point: Point;
 }
 
-export function reduce(action: Action): State {
-  const stateString = Module.reduce(JSON.stringify(action));
+export function reduce(actions: Action[]): State {
+  const stateString = Module.reduce(JSON.stringify(actions));
   return JSON.parse(stateString);
 }

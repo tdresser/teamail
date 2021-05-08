@@ -7,6 +7,8 @@
 #include "JsonUtil.h"
 #include "Point.h"
 
+class Action;
+
 using json = nlohmann::json;
 
 class State {
@@ -17,7 +19,9 @@ class State {
   void setOrigin(Point point);
   void setTransform(Point point);
   void toJson(json& j) const;
+  State reduceAll(const std::vector<Action>& actions);
   static State& instance();
+  static void setInstance(State state);
 
  private:
   // Serialized.

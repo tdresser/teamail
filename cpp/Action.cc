@@ -12,7 +12,7 @@ void Action::fromJson(const json& j) {
   j.at("point").get_to(_point);
 }
 
-State Action::reduce(State state) {
+State Action::reduce(State state) const {
   switch (_type) {
     case ActionType::TouchStart:
       state.setOrigin(_point);

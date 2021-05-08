@@ -1,5 +1,6 @@
 #include "State.h"
-#include "nlohmann/json.hpp"
+#include <nlohmann/json.hpp>
+#include "Action.h"
 
 using json = nlohmann::json;
 
@@ -22,6 +23,18 @@ State& State::instance() {
     s_instance = std::make_unique<State>();
   }
   return *s_instance;
+}
+
+void State::setInstance(State state) {
+  *s_instance = state;
+};
+
+State State::reduceAll(const std::vector<Action>& actions) {
+  State state;
+  for (const Action& action : actions) {
+    state = action.reduce(state);
+  }
+  return state;
 }
 
 TO_JSON(State, state);

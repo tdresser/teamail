@@ -19,16 +19,21 @@ string getStringCC() {
   return str.as<string>();
 }
 
-State reduce(Action action) {
-  return action.reduce(State::instance());
+State reduce(const std::vector<Action>& actions) {
+  State state = State::instance();
+  for (const Action& action : actions) {
+    state = action.reduce(state);
+  }
+  State::setInstance(state);
+  return state;
 }
 
-string reduceWithActionString(const string& actionString) {
-  json actionJSON = json::parse(actionString);
-  Action action;
-  action.fromJson(actionJSON);
+string reduceWithActionsString(const string& actionString) {
+  json actionsJSON = json::parse(actionString);
+  std::vector<Action> actions;
+  actionsJSON.get_to(actions);
 
-  State newState = action.reduce(State::instance());
+  State newState = State::instance().reduceAll(actions);
 
   json newStateJSON;
   newState.toJson(newStateJSON);
@@ -37,5 +42,5 @@ string reduceWithActionString(const string& actionString) {
 }
 
 EMSCRIPTEN_BINDINGS(geometry) {
-  emscripten::function("reduce", &reduceWithActionString);
+  emscripten::function("reduce", &reduceWithActionsString);
 };
