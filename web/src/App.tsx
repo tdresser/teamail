@@ -1,22 +1,22 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { ActionType, Action, State, Point, reduce } from './Bindings';
 
 import './App.css';
 
 function App(): React.ReactElement {
-  const [cardOffset, setCardOffset] = useState({ x: 0, y: 0 });
   const [actionQueue, setActionQueue] = useState([] as Action[]);
   const [frameRequested, setFrameRequested] = useState(false);
+  // TODO: Pass an initial state, for before we've heard from C++?
   const [state, setState] = useState((null as unknown) as State);
-  //setCardOffset({ x: 0, y: 0 });
+  const card = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (frameRequested) {
       window.requestAnimationFrame(() => {
         setState(reduce(actionQueue));
-        console.log('RAF');
+        setActionQueue([]);
+        setFrameRequested(false);
       });
-      setFrameRequested(false);
     }
   }, [frameRequested]);
 
@@ -24,10 +24,17 @@ function App(): React.ReactElement {
     let actionType: ActionType = ActionType.unknown;
     switch (e.type) {
       case 'pointerdown':
+        card.current?.setPointerCapture(e.pointerId);
         actionType = ActionType.touchstart;
         break;
       case 'pointermove':
+        if (e.buttons == 0) {
+          return;
+        }
         actionType = ActionType.touchmove;
+        break;
+      case 'pointerup':
+        actionType = ActionType.touchend;
         break;
     }
     setActionQueue((x: Action[]): Action[] => {
@@ -40,40 +47,25 @@ function App(): React.ReactElement {
 
   useEffect(() => {
     Module.onRuntimeInitialized = (): void => {
-      let state: State | null = null;
-      try {
-        state = reduce([
-          new Action(ActionType.touchstart, new Point(0, 10)),
-          new Action(ActionType.touchmove, new Point(10, 20)),
-        ]);
-        state = reduce([new Action(ActionType.touchmove, new Point(20, 30))]);
-      } catch (e) {
-        console.log(Module.getExceptionMessage(e));
-      }
-
-      console.log(state);
-
-      /*const offset = JSON.parse(Module.getCardOffset());
-      setCardOffset({ x: offset.x, y: offset.y });
-      try {
-        Module.testGetString();
-      } catch (e) {
-        console.log(Module.getExceptionMessage(e));
-      }*/
+      setState(reduce(actionQueue));
     };
   });
+
+  const x = state?.transform?.x ?? 0;
+  const y = state?.transform?.y ?? 0;
 
   const cardStyle = {
     width: '100px',
     height: '100px',
     boxShadow: '1px 1px 3px',
-    transform: 'translate(' + cardOffset.x + 'px, ' + cardOffset.y + 'px)',
+    transform: 'translate(' + x + 'px, ' + y + 'px)',
   };
   return (
     <div className='App'>
       <div
         id='card'
         style={cardStyle}
+        ref={card}
         onPointerDown={onPointerEvent}
         onPointerMove={onPointerEvent}
         onPointerUp={onPointerEvent}

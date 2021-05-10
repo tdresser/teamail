@@ -28,8 +28,8 @@ State reduce(const std::vector<Action>& actions) {
   return state;
 }
 
-string reduceWithActionsString(const string& actionString) {
-  json actionsJSON = json::parse(actionString);
+string reduceWithActionsString(const string& actionsString) {
+  json actionsJSON = json::parse(actionsString);
   std::vector<Action> actions;
   actionsJSON.get_to(actions);
 

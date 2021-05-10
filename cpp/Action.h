@@ -6,13 +6,15 @@
 
 #include "nlohmann/json.hpp"
 
-enum class ActionType { Unknown, TouchStart, TouchMove };
+enum class ActionType { Unknown, TouchStart, TouchMove, TouchEnd };
 
 JSON_SERIALIZE_ENUM(ActionType,
                     {
                         {ActionType::Unknown, "unknown"},
                         {ActionType::TouchStart, "touchstart"},
                         {ActionType::TouchMove, "touchmove"},
+                        {ActionType::TouchEnd, "touchend"},
+
                     });
 
 class Action {

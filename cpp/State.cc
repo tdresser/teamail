@@ -14,6 +14,10 @@ void State::setOrigin(Point point) {
   _origin = point;
 }
 
+void State::clearOrigin() {
+  _origin.reset();
+}
+
 void State::setTransform(Point point) {
   _transform = point;
 }

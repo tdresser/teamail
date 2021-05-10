@@ -17,6 +17,7 @@ class State {
   inline Point transform() { return _transform; };
   inline std::optional<Point> origin() { return _origin; };
   void setOrigin(Point point);
+  void clearOrigin();
   void setTransform(Point point);
   void toJson(json& j) const;
   State reduceAll(const std::vector<Action>& actions);

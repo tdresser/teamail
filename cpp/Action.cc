@@ -21,8 +21,13 @@ State Action::reduce(State state) const {
     case ActionType::TouchMove:
       state.setTransform(state.transform() + (_point - *state.origin()));
       break;
+    case ActionType::TouchEnd:
+      state.clearOrigin();
+      state.setTransform(Point(0, 0));
+      break;
     default:
-      std::cerr << "Unknown action type." << std::endl;
+      std::cerr << "Unknown action type " << static_cast<int>(_type)
+                << std::endl;
   }
   return state;
 }
