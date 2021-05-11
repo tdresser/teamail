@@ -41,6 +41,9 @@ export interface State {
 }
 
 export function reduce(actions: Action[]): State {
+  if (!window.moduleLoaded) {
+    throw new Error('Reduce called before module loaded.');
+  }
   const stateString = Module.reduce(JSON.stringify(actions));
   return JSON.parse(stateString);
 }

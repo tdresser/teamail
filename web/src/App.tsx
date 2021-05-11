@@ -3,22 +3,34 @@ import { ActionType, Action, State, Point, reduce } from './Bindings';
 
 import './App.css';
 
+window.moduleLoaded = false;
+
 function App(): React.ReactElement {
   const [actionQueue, setActionQueue] = useState([] as Action[]);
-  const [frameRequested, setFrameRequested] = useState(false);
+  const [lastFrameIDs, setLastFrameIDs] = useState({
+    presented: 1,
+    requested: 0,
+  });
   // TODO: Pass an initial state, for before we've heard from C++?
-  const [state, setState] = useState((null as unknown) as State);
+  const [state, setState] = useState(null as unknown as State);
   const card = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (frameRequested) {
-      window.requestAnimationFrame(() => {
-        setState(reduce(actionQueue));
-        setActionQueue([]);
-        setFrameRequested(false);
+    window.requestAnimationFrame(() => {
+      console.log('RAF');
+      console.log(lastFrameIDs);
+      setLastFrameIDs((x) => {
+        return { ...x, presented: x.requested };
       });
-    }
-  }, [frameRequested]);
+
+      if (!window.moduleLoaded) {
+        return;
+      }
+      console.log(JSON.stringify(actionQueue, null, 2));
+      setState(reduce(actionQueue));
+      setActionQueue([]);
+    });
+  }, [lastFrameIDs.requested]);
 
   const onPointerEvent = useCallback((e: React.PointerEvent) => {
     let actionType: ActionType = ActionType.unknown;
@@ -34,19 +46,33 @@ function App(): React.ReactElement {
         actionType = ActionType.touchmove;
         break;
       case 'pointerup':
+        console.log('Up');
         actionType = ActionType.touchend;
         break;
     }
+    console.log(actionType);
     setActionQueue((x: Action[]): Action[] => {
       const y = [...x];
       y.push(new Action(actionType, new Point(e.pageX, e.pageY)));
-      setFrameRequested(true);
+      console.log(y);
       return y;
+    });
+
+    setLastFrameIDs((x) => {
+      const newLastFrameIds = {
+        presented: x.presented,
+        requested: x.presented + 1,
+      };
+      console.log('Post request');
+      console.log(newLastFrameIds);
+      return newLastFrameIds;
     });
   }, []);
 
   useEffect(() => {
     Module.onRuntimeInitialized = (): void => {
+      console.log('Loaded');
+      window.moduleLoaded = true;
       setState(reduce(actionQueue));
     };
   });
