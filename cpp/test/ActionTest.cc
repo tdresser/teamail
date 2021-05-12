@@ -25,4 +25,8 @@ TEST(Action, Reduce) {
   state = Action(ActionType::TouchMove, Point(11, 20)).reduce(state);
   EXPECT_EQ(Point(1, 10), *state.origin());
   EXPECT_EQ(Point(10, 10), state.transform());
+
+  state = Action(ActionType::TouchMove, Point(11, 20)).reduce(state);
+  EXPECT_EQ(Point(1, 10), *state.origin());
+  EXPECT_EQ(Point(10, 10), state.transform());
 }

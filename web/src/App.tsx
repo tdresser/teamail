@@ -7,18 +7,27 @@ window.moduleLoaded = false;
 
 function App(): React.ReactElement {
   const [actionQueue, setActionQueue] = useState([] as Action[]);
-  const [lastFrameIDs, setLastFrameIDs] = useState({
-    presented: 1,
-    requested: 0,
-  });
+
   // TODO: Pass an initial state, for before we've heard from C++?
   const [state, setState] = useState(null as unknown as State);
   const card = useRef<HTMLDivElement>(null);
 
+  const [lastFrameIDs, setLastFrameIDs] = useState({
+    presented: 1,
+    requested: 0,
+  });
+  function requestFrame(): void {
+    setLastFrameIDs((x) => {
+      const newLastFrameIds = {
+        presented: x.presented,
+        requested: x.presented + 1,
+      };
+      return newLastFrameIds;
+    });
+  }
+
   useEffect(() => {
     window.requestAnimationFrame(() => {
-      console.log('RAF');
-      console.log(lastFrameIDs);
       setLastFrameIDs((x) => {
         return { ...x, presented: x.requested };
       });
@@ -26,9 +35,16 @@ function App(): React.ReactElement {
       if (!window.moduleLoaded) {
         return;
       }
-      console.log(JSON.stringify(actionQueue, null, 2));
-      setState(reduce(actionQueue));
-      setActionQueue([]);
+      const newState = reduce(actionQueue);
+      setState(newState);
+      const processedActionCount = actionQueue.length;
+      setActionQueue((x): Array<Action> => {
+        const y = x.slice(processedActionCount);
+        if (y.length > 0) {
+          requestFrame();
+        }
+        return y;
+      });
     });
   }, [lastFrameIDs.requested]);
 
@@ -46,27 +62,16 @@ function App(): React.ReactElement {
         actionType = ActionType.touchmove;
         break;
       case 'pointerup':
-        console.log('Up');
         actionType = ActionType.touchend;
         break;
     }
-    console.log(actionType);
     setActionQueue((x: Action[]): Action[] => {
       const y = [...x];
       y.push(new Action(actionType, new Point(e.pageX, e.pageY)));
-      console.log(y);
       return y;
     });
 
-    setLastFrameIDs((x) => {
-      const newLastFrameIds = {
-        presented: x.presented,
-        requested: x.presented + 1,
-      };
-      console.log('Post request');
-      console.log(newLastFrameIds);
-      return newLastFrameIds;
-    });
+    requestFrame();
   }, []);
 
   useEffect(() => {

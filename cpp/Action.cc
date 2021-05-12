@@ -1,5 +1,5 @@
 #include "Action.h"
-#include <iostream>
+#include <cstdio>
 #include "nlohmann/json.hpp"
 
 using json = nlohmann::json;
@@ -19,15 +19,14 @@ State Action::reduce(State state) const {
       state.setTransform(Point(0, 0));
       break;
     case ActionType::TouchMove:
-      state.setTransform(state.transform() + (_point - *state.origin()));
+      state.setTransform(_point - *state.origin());
       break;
     case ActionType::TouchEnd:
       state.clearOrigin();
       state.setTransform(Point(0, 0));
       break;
     default:
-      std::cerr << "Unknown action type " << static_cast<int>(_type)
-                << std::endl;
+      printf("Unknown action type %d\n", static_cast<int>(_type));
   }
   return state;
 }
