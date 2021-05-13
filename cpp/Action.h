@@ -6,13 +6,15 @@
 
 #include "nlohmann/json.hpp"
 
-enum class ActionType { Unknown, TouchStart, TouchMove };
+enum class ActionType { Unknown, TouchStart, TouchMove, TouchEnd };
 
 JSON_SERIALIZE_ENUM(ActionType,
                     {
                         {ActionType::Unknown, "unknown"},
                         {ActionType::TouchStart, "touchstart"},
                         {ActionType::TouchMove, "touchmove"},
+                        {ActionType::TouchEnd, "touchend"},
+
                     });
 
 class Action {
@@ -20,7 +22,7 @@ class Action {
   Action(ActionType type, Point point) : _type(type), _point(point) {}
   Action() = default;
 
-  State reduce(State state) { return state; }
+  [[nodiscard]] State reduce(State state) const;
   [[nodiscard]] ActionType type() const { return _type; };
   [[nodiscard]] const Point& point() const { return _point; }
   void toJson(json& j) const;

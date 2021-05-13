@@ -1,4 +1,5 @@
 #include "Point.h"
+#include <iostream>
 
 #include "nlohmann/json.hpp"
 

@@ -19,40 +19,28 @@ string getStringCC() {
   return str.as<string>();
 }
 
-extern string getCardOffset() {
-  json j;
-  Point p(100, 120);
-  p.toJson(j);
-  return to_string(j);
+State reduce(const std::vector<Action>& actions) {
+  State state = State::instance();
+  for (const Action& action : actions) {
+    state = action.reduce(state);
+  }
+  State::setInstance(state);
+  return state;
 }
 
-extern "C" int testGetString() {
-  Point point(10, 11);
-  Action action(ActionType::TouchStart, point);
-  json j;
-  action.toJson(j);
+string reduceWithActionsString(const string& actionsString) {
+  json actionsJSON = json::parse(actionsString);
+  std::vector<Action> actions;
+  actionsJSON.get_to(actions);
 
-  printf("%s\n", to_string(j).c_str());
+  State newState = State::instance().reduceAll(actions);
 
-  json actionJsonString = R"(
-    {
-      "type": "touchstart",
-      "point": {"x": 17, "y": 19}
-    }
-  )"_json;
-  auto recovered = actionJsonString.get<Action>();
-  printf("Recovered JSON: %d, %f, %f\n", action.type(), action.point().x(),
-         action.point().y());
+  json newStateJSON;
+  newState.toJson(newStateJSON);
 
-  printf("%s\n", getStringCC().c_str());
-  return 7;
-}
-
-State reduce(Action action) {
-  return action.reduce(State::instance());
+  return newStateJSON.dump();
 }
 
 EMSCRIPTEN_BINDINGS(geometry) {
-  emscripten::function<string>("getCardOffset", &getCardOffset);
-  emscripten::function<int>("testGetString", &testGetString);
+  emscripten::function("reduce", &reduceWithActionsString);
 };
