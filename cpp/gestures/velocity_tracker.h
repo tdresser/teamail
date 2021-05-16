@@ -133,7 +133,7 @@ class VelocityTracker {
   // by
   // increasing id.  Its size should be equal to the number of one bits in
   // id_bits.
-  void AddMovement(const base::TimeTicks& event_time,
+  void AddMovement(const TimeTicks& event_time,
                    BitSet32 id_bits,
                    const Position* positions);
 
@@ -141,7 +141,7 @@ class VelocityTracker {
   // Returns false if the pointer velocity is unknown.
   bool GetEstimator(uint32_t id, Estimator* out_estimator) const;
 
-  base::TimeTicks last_event_time_;
+  TimeTicks last_event_time_;
   BitSet32 current_pointer_id_bits_;
   int32_t active_pointer_id_;
   std::unique_ptr<VelocityTrackerStrategy> strategy_;

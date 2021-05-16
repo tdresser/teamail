@@ -21,25 +21,23 @@ class VelocityTrackerState {
   explicit VelocityTrackerState(VelocityTracker::Strategy strategy);
   ~VelocityTrackerState();
 
-  void Clear();
-  void AddMovement(const MotionEvent& event);
-  void ComputeCurrentVelocity(int32_t units, float max_velocity);
-  float GetXVelocity(int32_t id) const;
-  float GetYVelocity(int32_t id) const;
+  void clear();
+  void addMovement(const MotionEvent& event);
+  void computeCurrentVelocity(int32_t units, float max_velocity);
+  [[nodiscard]] float getXVelocity(int32_t id) const;
+  [[nodiscard]] float getYVelocity(int32_t id) const;
 
  private:
   struct Velocity {
     float vx, vy;
   };
 
-  void GetVelocity(int32_t id, float* out_vx, float* out_vy) const;
+  void getVelocity(int32_t id, float* out_vx, float* out_vy) const;
 
-  VelocityTracker velocity_tracker_;
-  int32_t active_pointer_id_;
-  BitSet32 calculated_id_bits_;
-  Velocity calculated_velocity_[VelocityTracker::MAX_POINTERS];
-
-  DISALLOW_COPY_AND_ASSIGN(VelocityTrackerState);
+  VelocityTracker _velocity_tracker;
+  int32_t _active_pointer_id;
+  BitSet32 _calculated_id_bits;
+  Velocity _calculated_velocity[VelocityTracker::MAX_POINTERS];
 };
 
 }  // namespace ui
