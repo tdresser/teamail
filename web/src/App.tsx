@@ -5,6 +5,23 @@ import './App.css';
 
 window.moduleLoaded = false;
 
+// https://teamail-46501.firebaseapp.com
+// https://github.com/google/google-api-javascript-client/blob/master/docs/start.md
+
+function login(): void {
+  gapi.load('client', () => {
+    gapi.auth2
+      .init({
+        client_id: '957024671877-pmopl7t9j5vtieu207p56slhr7h1pkui.apps.googleusercontent.com',
+        scope: 'email',
+      })
+      .then(async () => {
+        await gapi.auth2.getAuthInstance().signIn();
+        console.log(gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token);
+      });
+  });
+}
+
 function App(): React.ReactElement {
   const [actionQueue, setActionQueue] = useState([] as Action[]);
 
@@ -80,7 +97,9 @@ function App(): React.ReactElement {
       window.moduleLoaded = true;
       setState(reduce(actionQueue));
     };
-  });
+
+    login();
+  }, []);
 
   const x = state?.transform?.x ?? 0;
   const y = state?.transform?.y ?? 0;
