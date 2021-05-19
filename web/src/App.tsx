@@ -9,15 +9,22 @@ window.moduleLoaded = false;
 // https://github.com/google/google-api-javascript-client/blob/master/docs/start.md
 
 function login(): void {
-  gapi.load('client', () => {
+  gapi.load('auth2', () => {
     gapi.auth2
       .init({
         client_id: '957024671877-pmopl7t9j5vtieu207p56slhr7h1pkui.apps.googleusercontent.com',
         scope: 'email',
       })
-      .then(async () => {
-        await gapi.auth2.getAuthInstance().signIn();
-        console.log(gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token);
+      .then(async (auth) => {
+        //const auth = gapi.auth2.getAuthInstance();
+        console.log('TEST');
+        console.log(auth.isSignedIn.get());
+        if (!auth.isSignedIn.get()) {
+          await auth.signIn();
+        }
+
+        const accessToken = auth.currentUser.get().getAuthResponse().access_token;
+        console.log(accessToken);
       });
   });
 }
@@ -65,6 +72,16 @@ function App(): React.ReactElement {
     });
   }, [lastFrameIDs.requested]);
 
+  function queueAction(action: Action): void {
+    setActionQueue((x: Action[]): Action[] => {
+      const y = [...x];
+      y.push(action);
+      return y;
+    });
+
+    requestFrame();
+  }
+
   const onPointerEvent = useCallback((e: React.PointerEvent) => {
     let actionType: ActionType = ActionType.unknown;
     switch (e.type) {
@@ -82,13 +99,8 @@ function App(): React.ReactElement {
         actionType = ActionType.touchend;
         break;
     }
-    setActionQueue((x: Action[]): Action[] => {
-      const y = [...x];
-      y.push(new Action(actionType, new Point(e.pageX, e.pageY)));
-      return y;
-    });
 
-    requestFrame();
+    queueAction(new Action(actionType, new Point(e.pageX, e.pageY)));
   }, []);
 
   useEffect(() => {

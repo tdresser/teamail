@@ -13,6 +13,23 @@ TEST(Action, Serialize) {
   EXPECT_EQ(10, j.at("point").at("y").get<float>());
 }
 
+TEST(Action, Deserialize) {
+  json j = R"(
+    {
+      "type": "touchstart",
+      "point": {
+        x: 1,
+        y: 2,
+      }
+    }
+  )"_json;
+
+  Action action;
+  action.fromJson(j);
+
+  EXPECT_EQ(Action(ActionType::TouchStart, Point(1, 2)), action);
+}
+
 TEST(Action, Reduce) {
   State state;
   EXPECT_FALSE(state.origin().has_value());
