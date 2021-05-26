@@ -8,7 +8,7 @@ window.moduleLoaded = false;
 // https://teamail-46501.firebaseapp.com
 // https://github.com/google/google-api-javascript-client/blob/master/docs/start.md
 
-function login(): void {
+function login(queueAction: (action: Action) => void): void {
   gapi.load('auth2', () => {
     gapi.auth2
       .init({
@@ -24,6 +24,8 @@ function login(): void {
         }
 
         const accessToken = auth.currentUser.get().getAuthResponse().access_token;
+        queueAction(new Action(ActionType.auth, { text: accessToken }));
+
         console.log(accessToken);
       });
   });
@@ -100,7 +102,7 @@ function App(): React.ReactElement {
         break;
     }
 
-    queueAction(new Action(actionType, new Point(e.pageX, e.pageY)));
+    queueAction(new Action(actionType, { point: new Point(e.pageX, e.pageY) }));
   }, []);
 
   useEffect(() => {
@@ -110,7 +112,7 @@ function App(): React.ReactElement {
       setState(reduce(actionQueue));
     };
 
-    login();
+    login(queueAction);
   }, []);
 
   const x = state?.transform?.x ?? 0;

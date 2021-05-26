@@ -7,14 +7,36 @@ export enum ActionType {
   touchstart,
   touchmove,
   touchend,
+  auth,
 }
 
 type ActionTypeString = keyof typeof ActionType;
 
+interface ActionParamsPointer {
+  point: Point;
+}
+
+interface ActionParamsAuth {
+  text: string;
+}
+
+type ActionParams = ActionParamsPointer | ActionParamsAuth;
+
 export class Action {
-  constructor(type: ActionType, point: Point) {
+  constructor(type: ActionType, params: ActionParams) {
     this.type = ActionType[type] as ActionTypeString;
-    this.point = point;
+    switch (type) {
+      case ActionType.touchstart:
+      case ActionType.touchmove:
+      case ActionType.touchend: {
+        this.point = (params as ActionParamsPointer).point;
+        break;
+      }
+      case ActionType.auth: {
+        this.text = (params as ActionParamsAuth).text;
+        break;
+      }
+    }
   }
 
   // Touch variables otherwise only read from C++.
@@ -24,7 +46,8 @@ export class Action {
   }
 
   private type: ActionTypeString;
-  private point: Point;
+  private point?: Point;
+  private text?: string;
 }
 
 export class Point {

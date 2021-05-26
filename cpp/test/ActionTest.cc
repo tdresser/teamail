@@ -13,13 +13,13 @@ TEST(Action, Serialize) {
   EXPECT_EQ(10, j.at("point").at("y").get<float>());
 }
 
-TEST(Action, Deserialize) {
+TEST(Action, DeserializePointerAction) {
   json j = R"(
     {
       "type": "touchstart",
       "point": {
-        x: 1,
-        y: 2,
+        "x": 1,
+        "y": 2
       }
     }
   )"_json;
