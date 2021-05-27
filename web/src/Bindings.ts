@@ -20,6 +20,7 @@ interface ActionParamsAuth {
   text: string;
 }
 
+// TODO: this should probably be just a bag of optional params. Validation can probably just happen on the C++ side.
 type ActionParams = ActionParamsPointer | ActionParamsAuth;
 
 export class Action {
@@ -43,6 +44,7 @@ export class Action {
   dummy(): void {
     console.log(this.type);
     console.log(this.point);
+    console.log(this.text);
   }
 
   private type: ActionTypeString;

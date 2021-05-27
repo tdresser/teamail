@@ -30,7 +30,7 @@ TEST(Action, DeserializePointerAction) {
   EXPECT_EQ(Action(ActionType::TouchStart, Point(1, 2)), action);
 }
 
-TEST(Action, Reduce) {
+TEST(Action, ReducePointer) {
   State state;
   EXPECT_FALSE(state.origin().has_value());
   EXPECT_EQ(Point(0, 0), state.transform());
@@ -46,4 +46,11 @@ TEST(Action, Reduce) {
   state = Action(ActionType::TouchMove, Point(11, 20)).reduce(state);
   EXPECT_EQ(Point(1, 10), *state.origin());
   EXPECT_EQ(Point(10, 10), state.transform());
+}
+
+TEST(Action, ReduceAuth) {
+  State state;
+
+  state = Action(ActionType::Auth, "fake-token").reduce(state);
+  EXPECT_EQ("fake-token", state.authToken());
 }

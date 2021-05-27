@@ -37,6 +37,11 @@ State Action::reduce(State state) const {
       state.clearOrigin();
       state.setTransform(Point(0, 0));
       break;
+    case ActionType::Auth:
+      printf("Authing");
+      printf("Token is: %s\n", _text.c_str());
+      state.setAuthToken(_text);
+      break;
     default:
       printf("Unknown action type %d\n", static_cast<int>(_type));
   }
