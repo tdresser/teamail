@@ -31,6 +31,7 @@ State reduce(const std::vector<Action>& actions) {
 string reduceWithActionsString(const string& actionsString) {
   json actionsJSON = json::parse(actionsString);
   std::vector<Action> actions;
+  printf("Actions length: %zu\n", actions.size());
   actionsJSON.get_to(actions);
 
   State newState = State::instance().reduceAll(actions);

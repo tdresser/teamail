@@ -7,6 +7,7 @@
 
 #include "JsonUtil.h"
 #include "Point.h"
+#include "ResourceManager.h"
 
 class Action;
 
@@ -22,9 +23,8 @@ class State {
   void setOrigin(Point point);
   void clearOrigin();
 
-  inline std::string authToken() { return _authToken; }
   inline void setAuthToken(std::string authToken) {
-    _authToken = std::move(authToken);
+    _resourceManager.setAuthToken(std::move(authToken));
   }
 
   void toJson(json& j) const;
@@ -40,7 +40,7 @@ class State {
   // Not serialized.
   std::optional<Point> _origin;
   static std::unique_ptr<State> s_instance;
-  std::string _authToken;
+  ResourceManager _resourceManager;
 };
 
 TO_JSON_DECLARE(State, state);

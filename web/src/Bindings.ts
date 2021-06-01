@@ -69,6 +69,9 @@ export function reduce(actions: Action[]): State {
   if (!window.moduleLoaded) {
     throw new Error('Reduce called before module loaded.');
   }
+  console.log('Reducing');
+  //console.log(JSON.stringify(actions, null, 2));
+  console.log(actions);
   const stateString = Module.reduce(JSON.stringify(actions));
   return JSON.parse(stateString);
 }

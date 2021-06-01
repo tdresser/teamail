@@ -38,8 +38,6 @@ State Action::reduce(State state) const {
       state.setTransform(Point(0, 0));
       break;
     case ActionType::Auth:
-      printf("Authing");
-      printf("Token is: %s\n", _text.c_str());
       state.setAuthToken(_text);
       break;
     default:

@@ -30,11 +30,15 @@ State& State::instance() {
 }
 
 void State::setInstance(State state) {
-  *s_instance = state;
+  *s_instance = std::move(state);
 };
 
 State State::reduceAll(const std::vector<Action>& actions) {
   State state;
+  if (actions.size() > 1000) {
+    printf("The action queue contains %zu actions. That's too many!\n",
+           actions.size());
+  }
   for (const Action& action : actions) {
     state = action.reduce(state);
   }

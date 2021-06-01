@@ -16,17 +16,12 @@ function login(queueAction: (action: Action) => void): void {
         scope: 'email',
       })
       .then(async (auth) => {
-        //const auth = gapi.auth2.getAuthInstance();
-        console.log('TEST');
-        console.log(auth.isSignedIn.get());
         if (!auth.isSignedIn.get()) {
           await auth.signIn();
         }
 
         const accessToken = auth.currentUser.get().getAuthResponse().access_token;
         queueAction(new Action(ActionType.auth, { text: accessToken }));
-
-        console.log(accessToken);
       });
   });
 }
@@ -61,6 +56,7 @@ function App(): React.ReactElement {
       if (!window.moduleLoaded) {
         return;
       }
+      console.log(actionQueue);
       const newState = reduce(actionQueue);
       setState(newState);
       const processedActionCount = actionQueue.length;

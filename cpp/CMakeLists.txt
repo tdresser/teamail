@@ -30,7 +30,9 @@ FetchContent_MakeAvailable(googletest)
 add_library(Lib STATIC
   Action.cc
   Point.cc
-  State.cc)
+  State.cc
+  ResourceManager.cc
+)
 
 target_link_libraries(Lib PUBLIC nlohmann_json::nlohmann_json)
 
@@ -40,8 +42,9 @@ if(BUILD STREQUAL "Web")
   set(EMS
     "SHELL:
     -s ENVIRONMENT='web'
-    -g3
+    -s FETCH=1
     -s ALLOW_MEMORY_GROWTH
+    -g3
     -fexceptions" # exceptions are super slow and costly, TODO, disable them.
     # -s TOTAL_MEMORY=278331392
     # -fsanitize=undefined
@@ -79,7 +82,8 @@ add_executable(Web)
 target_sources(Web PUBLIC
     WebMain.cc
     WebTest.cc
-    EmscriptenUtil.cc)
+    EmscriptenUtil.cc
+    FetchWeb.cc)
 
 target_link_libraries(Web PUBLIC Lib)
 
