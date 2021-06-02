@@ -24,5 +24,5 @@ void fetch(const std::string& url) {
   attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
   attr.onsuccess = downloadSucceeded;
   attr.onerror = downloadFailed;
-  emscripten_fetch(&attr, "myfile.dat");
+  emscripten_fetch(&attr, url.c_str());
 }

@@ -5,9 +5,9 @@
 #include <optional>
 #include <utility>
 
+#include "Gapi.h"
 #include "JsonUtil.h"
 #include "Point.h"
-#include "ResourceManager.h"
 
 class Action;
 
@@ -40,7 +40,7 @@ class State {
   // Not serialized.
   std::optional<Point> _origin;
   static std::unique_ptr<State> s_instance;
-  ResourceManager _resourceManager;
+  Gapi _resourceManager;
 };
 
 TO_JSON_DECLARE(State, state);

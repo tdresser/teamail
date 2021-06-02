@@ -31,7 +31,7 @@ add_library(Lib STATIC
   Action.cc
   Point.cc
   State.cc
-  ResourceManager.cc
+  Gapi.cc
 )
 
 target_link_libraries(Lib PUBLIC nlohmann_json::nlohmann_json)
@@ -65,7 +65,9 @@ endif()
 # https://google.github.io/googletest/quickstart-cmake.html
 
 add_executable(Test
-  test/ActionTest.cc)
+  test/ActionTest.cc
+  test/GapiTest.cc
+  FetchTest.cc)
 
 target_link_libraries(Test
   PUBLIC
