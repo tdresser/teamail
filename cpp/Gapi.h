@@ -1,19 +1,17 @@
 #include <map>
 #include <string>
+#include "Fetch.h"
 
 using string = std::string;
 
 class Gapi {
  public:
-  inline void setAuthToken(string authToken) {
-    _authToken = std::move(authToken);
-    fetchEmailList();
-  }
-
-  void fetchEmailList();
-  void fetchGapi(string url, string postBody, string queryParameters);
-  string encodeParameters(const string& url,
-                          const std::map<string, string>& params);
+  void setAuthToken(string authToken);
+  void fetchThreads(const string& query);
+  void fetchGapi(const string& url,
+                 const std::optional<string>& postBody,
+                 HTTPParams queryParameters);
+  string encodeParameters(const string& url, const HTTPParams& params);
 
  private:
   std::string _authToken;

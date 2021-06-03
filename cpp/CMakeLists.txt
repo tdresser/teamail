@@ -32,6 +32,7 @@ add_library(Lib STATIC
   Point.cc
   State.cc
   Gapi.cc
+  Util.cc
 )
 
 target_link_libraries(Lib PUBLIC nlohmann_json::nlohmann_json)
@@ -67,12 +68,14 @@ endif()
 add_executable(Test
   test/ActionTest.cc
   test/GapiTest.cc
-  FetchTest.cc)
+  test/FetchMock.cc
+  test/UtilTest.cc)
 
 target_link_libraries(Test
   PUBLIC
     Lib
-    gtest_main)
+    gtest_main
+    gmock)
 
 include(GoogleTest)
 gtest_discover_tests(Test)

@@ -24,7 +24,7 @@ class State {
   void clearOrigin();
 
   inline void setAuthToken(std::string authToken) {
-    _resourceManager.setAuthToken(std::move(authToken));
+    _gapi.setAuthToken(std::move(authToken));
   }
 
   void toJson(json& j) const;
@@ -40,7 +40,7 @@ class State {
   // Not serialized.
   std::optional<Point> _origin;
   static std::unique_ptr<State> s_instance;
-  Gapi _resourceManager;
+  Gapi _gapi;
 };
 
 TO_JSON_DECLARE(State, state);

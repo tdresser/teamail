@@ -1,12 +1,21 @@
 #include "Gapi.h"
 #include <map>
+#include <optional>
 #include "Fetch.h"
 
 using string = std::string;
 
-void Gapi::fetchEmailList() {
-  printf("%s\n", _authToken.c_str());
-  fetch("http://www.google.com");
+const string GMAIL_BASE_URL = "https://gmail.googleapis.com/gmail/v1/users/me";
+const string THREADS_URL = GMAIL_BASE_URL + "/threads";
+const string MESSAGES_URL = GMAIL_BASE_URL + "/messages";
+const string LABELS_URL = GMAIL_BASE_URL + "/labels";
+
+const string QUERY = "in:inbox -in:chats";  // TODO(tdresser)
+// const namesToExclude = Object.values(LabelName).join('" -in:"');
+// const query = `in:inbox -in:chats -in:"${namesToExclude}"`;
+
+void Gapi::fetchThreads(const string& query) {
+  fetch(THREADS_URL, "GET", std::nullopt, {{"q", query}});
 };
 
 // Based on https://stackoverflow.com/a/53593869/926929.
@@ -28,9 +37,34 @@ string encodeURIComponent(const string& component) {
   return ret;
 };
 
-void fetchGapi(const string& url,
-               const string& postBody,
-               const string& queryParameters) {}
+void Gapi::fetchGapi(const string& url,
+                     const std::optional<string>& postBody,
+                     HTTPParams queryParameters) {
+  HTTPParams params = {{"alt", "json"}, {"max-result", "100"}};
+  params.merge(queryParameters);
+  string fullUrl = encodeParameters(url, params);
+  HTTPParams headers = {{"Content-Type", "application/json"},
+                        {"Authorization", ""},
+                        {"Accept", "*/*"},
+                        {"Access-Control-Allow-Headers", "*"},
+                        {"X-Requested-With", "XMLHttpRequest"},
+                        {"Authorization", "Bearer " + _authToken}};
+
+  const string method = postBody.has_value() ? "POST" : "GET";
+  fetch(url, method, postBody, headers);
+}
+/*
+
+let response = await fetch(fullUrl, options);
+// 401 happens when auth credentials expire (and probably in other cases too).
+if (response.status == = 401) {
+  console.log('Retrying credentials');
+  await login();
+  response = await fetch(fullUrl, options);
+}
+return response;
+}
+*/
 
 string Gapi::encodeParameters(const string& url,
                               const std::map<string, string>& params) {
@@ -43,38 +77,7 @@ string Gapi::encodeParameters(const string& url,
   ret = ret.substr(0, ret.size() - 1);
   return ret;
 }
-
-/*
-  const fullUrl = encodeParameters(url, {
-    alt : 'json',
-    'max-results' : 100,
-    ... queryParameters,
-  });
-
-  const headers = new Headers({
-    'Content-Type' : 'application/json',
-    Authorization : '',
-    Accept : '*//*
-        * ', ' Access
-    - Control - Allow - Headers ' : ' * ', ' X - Requested
-    - With ' : ' XMLHttpRequest',
-});
-headers.set('Authorization', 'Bearer ' + accessToken);
-
-const options : RequestInit = {headers};
-if (postBody) {
-  options.method = 'POST';
-  options.body = JSON.stringify(postBody);
-} else {
-  options.method = 'GET';
+void Gapi::setAuthToken(string authToken) {
+  _authToken = std::move(authToken);
+  fetchThreads(QUERY);
 }
-let response = await fetch(fullUrl, options);
-// 401 happens when auth credentials expire (and probably in other cases too).
-if (response.status == = 401) {
-  console.log('Retrying credentials');
-  await login();
-  response = await fetch(fullUrl, options);
-}
-return response;
-}
-*/

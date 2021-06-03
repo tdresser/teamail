@@ -1,6 +1,9 @@
 #include <cstdio>
 #include <cstring>
+#include <optional>
 #include <string>
+#include "Fetch.h"
+#include "Util.h"
 #include "emscripten/fetch.h"
 
 void downloadSucceeded(emscripten_fetch_t* fetch) {
@@ -17,10 +20,17 @@ void downloadFailed(emscripten_fetch_t* fetch) {
   emscripten_fetch_close(fetch);  // Also free data on failure.
 }
 
-void fetch(const std::string& url) {
+void fetch(const std::string& url,
+           const std::string& method,
+           const std::optional<std::string>& postBody,
+           const HTTPParams& headers) {
   emscripten_fetch_attr_t attr;
   emscripten_fetch_attr_init(&attr);
-  strcpy(attr.requestMethod, "GET");
+  strcpy(attr.requestMethod, method.c_str());  // NOLINT
+  attr.requestHeaders = mapToCArray(headers);
+  if (postBody.has_value()) {
+    attr.requestData = postBody->c_str();
+  }
   attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
   attr.onsuccess = downloadSucceeded;
   attr.onerror = downloadFailed;

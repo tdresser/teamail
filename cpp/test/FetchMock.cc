@@ -1,9 +1,8 @@
-#include <map>
+#include <optional>
 #include <string>
-
-using HTTPParams = std::map<std::string, std::string>;
+#include "../Fetch.h"
 
 void fetch(const std::string& url,
            const std::string& method,
            const std::optional<std::string>& postBody,
-           const HTTPParams& headers);
+           const HTTPParams& headers){};
