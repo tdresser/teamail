@@ -1,8 +1,8 @@
+#include "FetcherWeb.h"
 #include <cstdio>
 #include <cstring>
 #include <optional>
 #include <string>
-#include "Fetch.h"
 #include "Util.h"
 #include "emscripten/fetch.h"
 
@@ -20,10 +20,10 @@ void downloadFailed(emscripten_fetch_t* fetch) {
   emscripten_fetch_close(fetch);  // Also free data on failure.
 }
 
-void fetch(const std::string& url,
-           const std::string& method,
-           const std::optional<std::string>& postBody,
-           const HTTPParams& headers) {
+void FetcherWeb::fetch(const std::string& url,
+                       const std::string& method,
+                       const std::optional<std::string>& postBody,
+                       const HTTPParams& headers) {
   emscripten_fetch_attr_t attr;
   emscripten_fetch_attr_init(&attr);
   strcpy(attr.requestMethod, method.c_str());  // NOLINT
@@ -32,7 +32,7 @@ void fetch(const std::string& url,
   printf("PRINTING\n");
 
   int i = 0;
-  while (attr.requestHeaders[i]) {
+  while (attr.requestHeaders[i] != nullptr) {
     printf("%s\n", attr.requestHeaders[i++]);
   }
 

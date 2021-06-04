@@ -23,26 +23,21 @@ void State::setTransform(Point point) {
 }
 
 State& State::instance() {
-  if (s_instance == nullptr) {
-    s_instance = std::make_unique<State>();
-  }
   return *s_instance;
 }
 
-void State::setInstance(State state) {
-  *s_instance = std::move(state);
+void State::setInstance(std::unique_ptr<State>(state)) {
+  s_instance = std::move(state);
 };
 
-State State::reduceAll(const std::vector<Action>& actions) {
-  State state;
+void State::reduceAll(const std::vector<Action>& actions) {
   if (actions.size() > 1000) {
     printf("The action queue contains %zu actions. That's too many!\n",
            actions.size());
   }
   for (const Action& action : actions) {
-    state = action.reduce(state);
+    action.reduce(*this);
   }
-  return state;
 }
 
 TO_JSON(State, state);

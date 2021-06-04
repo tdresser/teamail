@@ -5,6 +5,7 @@
 #include <optional>
 #include <utility>
 
+#include "Fetcher.h"
 #include "Gapi.h"
 #include "JsonUtil.h"
 #include "Point.h"
@@ -15,7 +16,8 @@ using json = nlohmann::json;
 
 class State {
  public:
-  State() = default;
+  explicit State(std::unique_ptr<Fetcher> fetcher)
+      : _gapi(std::move(fetcher)) {}
   inline Point transform() { return _transform; };
   void setTransform(Point point);
 
@@ -29,9 +31,9 @@ class State {
 
   void toJson(json& j) const;
 
-  State reduceAll(const std::vector<Action>& actions);
+  void reduceAll(const std::vector<Action>& actions);
   static State& instance();
-  static void setInstance(State state);
+  static void setInstance(std::unique_ptr<State> state);
 
  private:
   // Serialized.

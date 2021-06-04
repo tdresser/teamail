@@ -24,7 +24,7 @@ void Action::fromJson(const json& j) {
   }
 }
 
-State Action::reduce(State state) const {
+void Action::reduce(State& state) const {
   switch (_type) {
     case ActionType::TouchStart:
       state.setOrigin(_point);
@@ -43,7 +43,6 @@ State Action::reduce(State state) const {
     default:
       printf("Unknown action type %d\n", static_cast<int>(_type));
   }
-  return state;
 }
 
 TO_JSON(Action, action);

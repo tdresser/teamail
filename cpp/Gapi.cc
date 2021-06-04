@@ -1,7 +1,7 @@
 #include "Gapi.h"
 #include <map>
 #include <optional>
-#include "Fetch.h"
+#include "Fetcher.h"
 
 using string = std::string;
 
@@ -15,7 +15,7 @@ const string QUERY = "in:inbox -in:chats";  // TODO(tdresser)
 // const query = `in:inbox -in:chats -in:"${namesToExclude}"`;
 
 void Gapi::fetchThreads(const string& query) {
-  fetch(THREADS_URL, "GET", std::nullopt, {{"q", query}});
+  _fetcher->fetch(THREADS_URL, "GET", std::nullopt, {{"q", query}});
 };
 
 // Based on https://stackoverflow.com/a/53593869/926929.
@@ -51,7 +51,7 @@ void Gapi::fetchGapi(const string& url,
                         {"Authorization", "Bearer " + _authToken}};
 
   const string method = postBody.has_value() ? "POST" : "GET";
-  fetch(url, method, postBody, headers);
+  _fetcher->fetch(url, method, postBody, headers);
 }
 /*
 

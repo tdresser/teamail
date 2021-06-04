@@ -29,7 +29,7 @@ class Action {
 
   Action() = default;
 
-  [[nodiscard]] State reduce(State state) const;
+  void reduce(State& state) const;
   [[nodiscard]] ActionType type() const { return _type; };
   [[nodiscard]] const Point& point() const { return _point; }
   [[nodiscard]] std::string text() const { return _text; }

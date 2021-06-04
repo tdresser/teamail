@@ -1,8 +1,12 @@
+#include <memory>
 #include <nlohmann/json.hpp>
 #include "../Action.h"
 #include "../State.h"
+#include "MockFetcher.h"
 
 #include <gtest/gtest.h>
+
+using testing::_;
 
 TEST(Action, Serialize) {
   Action action(ActionType::TouchStart, Point(1, 10));
@@ -31,26 +35,28 @@ TEST(Action, DeserializePointerAction) {
 }
 
 TEST(Action, ReducePointer) {
-  State state;
+  State state(std::make_unique<MockFetcher>());
   EXPECT_FALSE(state.origin().has_value());
   EXPECT_EQ(Point(0, 0), state.transform());
 
-  state = Action(ActionType::TouchStart, Point(1, 10)).reduce(state);
+  Action(ActionType::TouchStart, Point(1, 10)).reduce(state);
   EXPECT_EQ(Point(1, 10), *state.origin());
   EXPECT_EQ(Point(0, 0), state.transform());
 
-  state = Action(ActionType::TouchMove, Point(11, 20)).reduce(state);
+  Action(ActionType::TouchMove, Point(11, 20)).reduce(state);
   EXPECT_EQ(Point(1, 10), *state.origin());
   EXPECT_EQ(Point(10, 10), state.transform());
 
-  state = Action(ActionType::TouchMove, Point(11, 20)).reduce(state);
+  Action(ActionType::TouchMove, Point(11, 20)).reduce(state);
   EXPECT_EQ(Point(1, 10), *state.origin());
   EXPECT_EQ(Point(10, 10), state.transform());
 }
 
 TEST(Action, ReduceAuth) {
-  State state;
+  std::unique_ptr<MockFetcher> fetcher = std::make_unique<MockFetcher>();
+  EXPECT_CALL(*fetcher, fetch(_, _, _, _)).Times(1);
+  State state(std::move(fetcher));
 
-  state = Action(ActionType::Auth, "fake-token").reduce(state);
+  Action(ActionType::Auth, "fake-token").reduce(state);
   // TODO(tdresser)
 }

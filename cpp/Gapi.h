@@ -1,11 +1,14 @@
 #include <map>
+#include <memory>
 #include <string>
-#include "Fetch.h"
+#include "Fetcher.h"
 
 using string = std::string;
 
 class Gapi {
  public:
+  explicit Gapi(std::unique_ptr<Fetcher> fetcher)
+      : _fetcher(std::move(fetcher)){};
   void setAuthToken(string authToken);
   void fetchThreads(const string& query);
   void fetchGapi(const string& url,
@@ -15,4 +18,5 @@ class Gapi {
 
  private:
   std::string _authToken;
+  std::unique_ptr<Fetcher> _fetcher;
 };

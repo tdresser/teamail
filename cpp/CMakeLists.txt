@@ -68,7 +68,6 @@ endif()
 add_executable(Test
   test/ActionTest.cc
   test/GapiTest.cc
-  test/FetchMock.cc
   test/UtilTest.cc)
 
 target_link_libraries(Test
@@ -88,7 +87,7 @@ target_sources(Web PUBLIC
     WebMain.cc
     WebTest.cc
     EmscriptenUtil.cc
-    FetchWeb.cc)
+    FetcherWeb.cc)
 
 target_link_libraries(Web PUBLIC Lib)
 
