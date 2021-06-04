@@ -28,8 +28,19 @@ void fetch(const std::string& url,
   emscripten_fetch_attr_init(&attr);
   strcpy(attr.requestMethod, method.c_str());  // NOLINT
   attr.requestHeaders = mapToCArray(headers);
+
+  printf("PRINTING\n");
+
+  int i = 0;
+  while (attr.requestHeaders[i]) {
+    printf("%s\n", attr.requestHeaders[i++]);
+  }
+
+  printf("PRINTED\n");
+
   if (postBody.has_value()) {
     attr.requestData = postBody->c_str();
+    // TODO(tdresser): set attr.requestDataSize?
   }
   attr.attributes = EMSCRIPTEN_FETCH_LOAD_TO_MEMORY;
   attr.onsuccess = downloadSucceeded;

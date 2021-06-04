@@ -5,11 +5,13 @@
 #include <gtest/gtest.h>
 #include <vector>
 
-std::vector<std::string> CArrayToVector(const char* const* ar, size_t size) {
-  std::vector<std::string> ret(size);
+std::vector<std::string> cArrayToVector(const char* const* ar) {
+  std::vector<std::string> ret;
 
-  for (int i = 0; i < size; ++i) {
-    ret[i] = std::string(ar[i]);  // NOLINT
+  int i = 0;
+  while (ar[i] != nullptr) {
+    ret.push_back(std::string(ar[i]));  // NOLINT
+    ++i;
   }
   return ret;
 }
@@ -17,7 +19,7 @@ std::vector<std::string> CArrayToVector(const char* const* ar, size_t size) {
 TEST(Gapi, MapToCArray) {
   const char* const* cArray =
       mapToCArray({{"key1", "value1"}, {"key2", "value2"}});
-  std::vector<std::string> result = CArrayToVector(cArray, 4);
+  std::vector<std::string> result = cArrayToVector(cArray);
   EXPECT_THAT(result, testing::UnorderedElementsAre("key1", "value1", "key2",
                                                     "value2"));
 }
