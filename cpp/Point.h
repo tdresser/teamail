@@ -22,6 +22,8 @@ class Point {
     return _x == p.x() && _y == p.y();
   }
 
+  inline bool operator!=(const Point& p) const { return !(*this == p); }
+
   void toJson(json& j) const;
   void fromJson(const json& j);
 

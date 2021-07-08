@@ -5,6 +5,27 @@ import './App.css';
 
 window.moduleLoaded = false;
 
+// https://teamail-46501.firebaseapp.com
+// https://github.com/google/google-api-javascript-client/blob/master/docs/start.md
+
+function login(queueAction: (action: Action) => void): void {
+  gapi.load('auth2', () => {
+    gapi.auth2
+      .init({
+        client_id: '957024671877-pmopl7t9j5vtieu207p56slhr7h1pkui.apps.googleusercontent.com',
+        scope: 'email',
+      })
+      .then(async (auth) => {
+        if (!auth.isSignedIn.get()) {
+          await auth.signIn();
+        }
+
+        const accessToken = auth.currentUser.get().getAuthResponse().access_token;
+        queueAction(new Action(ActionType.auth, { text: accessToken }));
+      });
+  });
+}
+
 function App(): React.ReactElement {
   const [actionQueue, setActionQueue] = useState([] as Action[]);
 
@@ -35,6 +56,7 @@ function App(): React.ReactElement {
       if (!window.moduleLoaded) {
         return;
       }
+      console.log(actionQueue);
       const newState = reduce(actionQueue);
       setState(newState);
       const processedActionCount = actionQueue.length;
@@ -47,6 +69,16 @@ function App(): React.ReactElement {
       });
     });
   }, [lastFrameIDs.requested]);
+
+  function queueAction(action: Action): void {
+    setActionQueue((x: Action[]): Action[] => {
+      const y = [...x];
+      y.push(action);
+      return y;
+    });
+
+    requestFrame();
+  }
 
   const onPointerEvent = useCallback((e: React.PointerEvent) => {
     let actionType: ActionType = ActionType.unknown;
@@ -65,13 +97,8 @@ function App(): React.ReactElement {
         actionType = ActionType.touchend;
         break;
     }
-    setActionQueue((x: Action[]): Action[] => {
-      const y = [...x];
-      y.push(new Action(actionType, new Point(e.pageX, e.pageY)));
-      return y;
-    });
 
-    requestFrame();
+    queueAction(new Action(actionType, { point: new Point(e.pageX, e.pageY) }));
   }, []);
 
   useEffect(() => {
@@ -80,7 +107,9 @@ function App(): React.ReactElement {
       window.moduleLoaded = true;
       setState(reduce(actionQueue));
     };
-  });
+
+    login(queueAction);
+  }, []);
 
   const x = state?.transform?.x ?? 0;
   const y = state?.transform?.y ?? 0;
