@@ -13,12 +13,12 @@ function login(queueAction: (action: Action) => void): void {
     gapi.auth2
       .init({
         client_id: '957024671877-pmopl7t9j5vtieu207p56slhr7h1pkui.apps.googleusercontent.com',
-        scope: 'email',
+        scope: 'https://mail.google.com/',
       })
       .then(async (auth) => {
-        if (!auth.isSignedIn.get()) {
-          await auth.signIn();
-        }
+        //if (!auth.isSignedIn.get()) {
+        await auth.signIn();
+        //}
 
         const accessToken = auth.currentUser.get().getAuthResponse().access_token;
         queueAction(new Action(ActionType.auth, { text: accessToken }));

@@ -27,3 +27,5 @@ There's a static assert in emscripten which I've just removed, which is gross. T
 
 Figure out a better way to manage clangd than
 "--compile-commands-dir=cpp/out_test"
+
+https://developers.google.com/apis-explorer/#p/gmail/v1/

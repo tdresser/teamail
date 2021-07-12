@@ -15,11 +15,9 @@ using json = nlohmann::json;
 using string = std::string;
 
 int main() {
-  printf("MAIN A\n");
   std::unique_ptr<State> state =
       std::make_unique<State>(std::make_unique<FetcherWeb>());
   State::setInstance(std::move(state));
-  printf("MAIN B\n");
 }
 
 string getStringCC() {

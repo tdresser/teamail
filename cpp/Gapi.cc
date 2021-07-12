@@ -1,10 +1,13 @@
 #include "Gapi.h"
+#include <cstring>
 #include <map>
 #include <optional>
 #include "Fetcher.h"
 
 using string = std::string;
 
+// const string GMAIL_BASE_URL =
+// "https://gmail.googleapis.com/gmail/v1/users/me";
 const string GMAIL_BASE_URL = "https://gmail.googleapis.com/gmail/v1/users/me";
 const string THREADS_URL = GMAIL_BASE_URL + "/threads";
 const string MESSAGES_URL = GMAIL_BASE_URL + "/messages";
@@ -15,7 +18,7 @@ const string QUERY = "in:inbox -in:chats";  // TODO(tdresser)
 // const query = `in:inbox -in:chats -in:"${namesToExclude}"`;
 
 void Gapi::fetchThreads(const string& query) {
-  _fetcher->fetch(THREADS_URL, "GET", std::nullopt, {{"q", query}});
+  fetchGapi(THREADS_URL, std::nullopt, {{"q", query}});
 };
 
 // Based on https://stackoverflow.com/a/53593869/926929.
@@ -43,15 +46,15 @@ void Gapi::fetchGapi(const string& url,
   HTTPParams params = {{"alt", "json"}, {"max-result", "100"}};
   params.merge(queryParameters);
   string fullUrl = encodeParameters(url, params);
+
   HTTPParams headers = {{"Content-Type", "application/json"},
-                        {"Authorization", ""},
                         {"Accept", "*/*"},
                         {"Access-Control-Allow-Headers", "*"},
                         {"X-Requested-With", "XMLHttpRequest"},
                         {"Authorization", "Bearer " + _authToken}};
 
   const string method = postBody.has_value() ? "POST" : "GET";
-  _fetcher->fetch(url, method, postBody, headers);
+  _fetcher->fetch(fullUrl, method, postBody, headers);
 }
 /*
 

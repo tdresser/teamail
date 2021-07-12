@@ -29,15 +29,6 @@ void FetcherWeb::fetch(const std::string& url,
   strcpy(attr.requestMethod, method.c_str());  // NOLINT
   attr.requestHeaders = mapToCArray(headers);
 
-  printf("PRINTING\n");
-
-  int i = 0;
-  while (attr.requestHeaders[i] != nullptr) {
-    printf("%s\n", attr.requestHeaders[i++]);
-  }
-
-  printf("PRINTED\n");
-
   if (postBody.has_value()) {
     attr.requestData = postBody->c_str();
     // TODO(tdresser): set attr.requestDataSize?
